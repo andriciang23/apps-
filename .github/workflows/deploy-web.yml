@@ -24,13 +24,14 @@ jobs:
           cache-dependency-path: drink-tracker/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
         working-directory: drink-tracker
 
       - name: Build web app
         run: npx expo export --platform web
         working-directory: drink-tracker
         env:
+          # Must match the GitHub Pages path: https://andriciang23.github.io/apps-/
           EXPO_BASE_URL: /apps-
 
       - name: Deploy to GitHub Pages
@@ -38,5 +39,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: drink-tracker/dist
-          destination_dir: siplog
           commit_message: "Deploy Sip Log web app"
