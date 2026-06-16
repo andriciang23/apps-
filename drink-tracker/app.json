@@ -48,7 +48,13 @@
     },
     "web": {
       "bundler": "metro",
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "output": "static",
+      "name": "Sip Log",
+      "shortName": "Sip Log",
+      "description": "Track your daily drinks",
+      "themeColor": "#FF6B6B",
+      "backgroundColor": "#FFF8F5"
     },
     "experiments": {
       "typedRoutes": true
