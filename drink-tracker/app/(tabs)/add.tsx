@@ -16,7 +16,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import { Colors } from '../../constants/Colors';
-import { addDrink, uploadDrinkPhoto } from '../../lib/drinks';
+import { addDrink, uploadDrinkPhoto } from '../../lib/storage';
 import LocationPicker from '../../components/LocationPicker';
 import { TAG_LABELS, TAG_EMOJIS } from '../../types';
 import type { DrinkTag, DrinkLocation } from '../../types';
@@ -100,7 +100,7 @@ export default function AddDrinkScreen() {
         try {
           const url = await uploadDrinkPhoto(photoUri, id);
           // update with storage URL (best effort)
-          const { updateDrink } = await import('../../lib/drinks');
+          const { updateDrink } = await import('../../lib/storage');
           await updateDrink(id, { photoStorageUrl: url });
         } catch {
           // photo upload failed, still saved the entry
@@ -112,7 +112,7 @@ export default function AddDrinkScreen() {
         { text: 'Go home', onPress: () => router.push('/') },
       ]);
     } catch (e) {
-      Alert.alert('Error', 'Failed to save drink. Check your Firebase config.');
+      Alert.alert('Error', 'Failed to save drink. Please try again.');
       console.error(e);
     } finally {
       setSaving(false);

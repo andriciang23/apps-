@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { format, isToday, isYesterday, parseISO, startOfDay, endOfDay } from 'date-fns';
 import { Colors } from '../../constants/Colors';
-import { getRecentDrinks, getAnalytics } from '../../lib/drinks';
+import { getRecentDrinks, getAnalytics } from '../../lib/storage';
 import DrinkCard from '../../components/DrinkCard';
 import StatsCard from '../../components/StatsCard';
 import StickerImage from '../../components/StickerImage';

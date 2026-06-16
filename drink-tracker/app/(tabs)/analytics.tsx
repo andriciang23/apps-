@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { BarChart, LineChart, PieChart } from 'react-native-chart-kit';
 import { format, parseISO, startOfMonth, endOfMonth, subMonths, eachDayOfInterval, startOfWeek, endOfWeek, getDay } from 'date-fns';
 import { Colors } from '../../constants/Colors';
-import { getDrinksByDateRange, getAnalytics } from '../../lib/drinks';
+import { getDrinksByDateRange, getAnalytics } from '../../lib/storage';
 import StatsCard from '../../components/StatsCard';
 import { TAG_EMOJIS, TAG_LABELS } from '../../types';
 import type { DrinkEntry, DrinkTag, AnalyticsSummary } from '../../types';

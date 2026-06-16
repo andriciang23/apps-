@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { format, parseISO } from 'date-fns';
 import { Colors } from '../../constants/Colors';
-import { getDrink, deleteDrink } from '../../lib/drinks';
+import { getDrink, deleteDrink } from '../../lib/storage';
 import StickerImage from '../../components/StickerImage';
 import { TAG_EMOJIS, TAG_LABELS } from '../../types';
 import type { DrinkEntry } from '../../types';

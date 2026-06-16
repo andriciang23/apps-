@@ -13,7 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { format, parseISO, startOfMonth, endOfMonth, subMonths } from 'date-fns';
 import { Colors } from '../../constants/Colors';
-import { getAllDrinks, deleteDrink } from '../../lib/drinks';
+import { getAllDrinks, deleteDrink } from '../../lib/storage';
 import DrinkCard from '../../components/DrinkCard';
 import { TAG_EMOJIS, TAG_LABELS } from '../../types';
 import type { DrinkEntry, DrinkTag } from '../../types';
