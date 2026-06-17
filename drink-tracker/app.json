@@ -1,0 +1,63 @@
+{
+  "expo": {
+    "name": "Sip Log",
+    "slug": "drink-tracker",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "scheme": "siplog",
+    "plugins": [
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow Sip Log to access your photos to add drink pictures.",
+          "cameraPermission": "Allow Sip Log to use your camera to take drink photos."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow Sip Log to use your location to tag where you had your drink."
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow Sip Log to use your camera."
+        }
+      ]
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.siplog.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FF6B6B"
+      },
+      "package": "com.siplog.app",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION"
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "favicon": "./assets/favicon.png",
+      "output": "static",
+      "name": "Sip Log",
+      "shortName": "Sip Log",
+      "description": "Track your daily drinks",
+      "themeColor": "#FF6B6B",
+      "backgroundColor": "#FFF8F5"
+    },
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
