@@ -60,9 +60,12 @@ const PRODUCT_SEARCH_QUERY = `
 `;
 
 export async function findBestVariant(productQuery: string) {
+  // Plain free-text search (no field prefix) lets Shopify tokenize and match
+  // across title/tags/vendor; a `title:*phrase with spaces*` wildcard does not
+  // reliably match multi-word phrases.
   const escaped = productQuery.replace(/['"]/g, "");
   const data = await shopifyGraphQL<ProductSearchResult>(PRODUCT_SEARCH_QUERY, {
-    query: `title:*${escaped}*`,
+    query: `${escaped} status:active`,
   });
 
   const firstProduct = data.products.edges[0]?.node;
@@ -79,6 +82,32 @@ export async function findBestVariant(productQuery: string) {
         : `${firstProduct.title} - ${firstVariant.title}`,
     price: firstVariant.price,
   };
+}
+
+interface CatalogTitlesResult {
+  products: { edges: Array<{ node: { title: string } }> };
+}
+
+const CATALOG_TITLES_QUERY = `
+  query CatalogTitles {
+    products(first: 250, query: "status:active") {
+      edges { node { title } }
+    }
+  }
+`;
+
+let catalogCache: { titles: string[]; fetchedAt: number } | null = null;
+const CATALOG_CACHE_TTL_MS = 10 * 60 * 1000;
+
+/** Cached list of active product titles, used to give Claude context on the real catalog. */
+export async function getCatalogTitles(): Promise<string[]> {
+  if (catalogCache && Date.now() - catalogCache.fetchedAt < CATALOG_CACHE_TTL_MS) {
+    return catalogCache.titles;
+  }
+  const data = await shopifyGraphQL<CatalogTitlesResult>(CATALOG_TITLES_QUERY, {});
+  const titles = data.products.edges.map((e) => e.node.title);
+  catalogCache = { titles, fetchedAt: Date.now() };
+  return titles;
 }
 
 export async function matchLineItems(items: ParsedOrderItem[]): Promise<MatchedLineItem[]> {

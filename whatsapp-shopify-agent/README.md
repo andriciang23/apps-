@@ -103,11 +103,14 @@ Open the link to confirm/send invoice/convert to a real order.
 
 - Only plain text messages are parsed; images/voice notes get a polite
   "please send as text" reply.
-- Product matching uses a simple Shopify title search and picks the first
+- Claude is given a cached list of your active product titles (refreshed
+  every 10 minutes) so it can map casual customer wording onto your real
+  catalog before the Shopify search even runs.
+- Product matching uses a free-text Shopify search and picks the first
   matching product/variant. Ambiguous or unmatched items are added as a
   flagged $0 custom line item in the draft order so nothing is silently
   dropped — review before confirming.
-- Message de-duplication is in-memory only (resets on restart); fine for a
-  single-instance deployment.
+- Message de-duplication is in-memory with a 10-minute TTL (resets on
+  restart); fine for a single-instance deployment.
 - No customer record matching yet — the WhatsApp sender's name/phone and the
   original message are stored in the draft order's note field.

@@ -59,9 +59,15 @@ const EXTRACT_ORDER_TOOL: Anthropic.Tool = {
 
 export async function parseOrderMessage(
   messageText: string,
-  whatsappProfileName?: string
+  whatsappProfileName?: string,
+  catalogTitles: string[] = []
 ): Promise<ParsedOrder> {
   const model = process.env.ANTHROPIC_MODEL || "claude-sonnet-4-6";
+
+  const catalogContext =
+    catalogTitles.length > 0
+      ? `\n\nKnown product titles in the catalog (use these to pick precise product_query values when the customer's wording is close to one of them):\n${catalogTitles.join(", ")}`
+      : "";
 
   const response = await getClient().messages.create({
     model,
@@ -69,7 +75,10 @@ export async function parseOrderMessage(
     system:
       "You extract structured order information from informal WhatsApp messages sent to a small business. " +
       "Customers often write in casual, abbreviated language and may mix languages. " +
-      "Use the extract_order tool to report your findings. If the message is not an order, set is_order to false.",
+      "When a catalog of known product titles is provided, prefer matching the customer's wording to the closest " +
+      "known title for product_query rather than repeating the customer's raw phrasing. " +
+      "Use the extract_order tool to report your findings. If the message is not an order, set is_order to false." +
+      catalogContext,
     messages: [
       {
         role: "user",
@@ -89,7 +98,10 @@ export async function parseOrderMessage(
   return {
     is_order: Boolean(input.is_order),
     customer_name: input.customer_name,
-    items: input.items ?? [],
+    items: (input.items ?? []).map((item) => ({
+      product_query: item.product_query,
+      quantity: Math.max(1, Math.round(item.quantity) || 1),
+    })),
     shipping_address: input.shipping_address,
     notes: input.notes,
   };

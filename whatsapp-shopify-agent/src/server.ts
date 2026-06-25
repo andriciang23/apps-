@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import express, { type Request, type Response } from "express";
 import { sendWhatsAppText } from "./whatsapp.js";
-import { matchLineItems, createDraftOrder } from "./shopify.js";
+import { matchLineItems, createDraftOrder, getCatalogTitles } from "./shopify.js";
 import { parseOrderMessage } from "./orderParser.js";
 import type { WhatsAppWebhookPayload } from "./types.js";
 
@@ -9,7 +9,20 @@ interface RawBodyRequest extends Request {
   rawBody?: Buffer;
 }
 
-const processedMessageIds = new Set<string>();
+// Meta retries webhook delivery for a limited window, so a short-lived
+// dedup map (rather than an ever-growing Set) is enough to avoid double-processing.
+const PROCESSED_ID_TTL_MS = 10 * 60 * 1000;
+const processedMessageIds = new Map<string, number>();
+
+function isDuplicateMessage(id: string): boolean {
+  const now = Date.now();
+  for (const [seenId, seenAt] of processedMessageIds) {
+    if (now - seenAt > PROCESSED_ID_TTL_MS) processedMessageIds.delete(seenId);
+  }
+  if (processedMessageIds.has(id)) return true;
+  processedMessageIds.set(id, now);
+  return false;
+}
 
 export function createServer() {
   const app = express();
@@ -21,6 +34,10 @@ export function createServer() {
       },
     })
   );
+
+  app.get("/healthz", (_req: Request, res: Response) => {
+    res.status(200).send("ok");
+  });
 
   // Webhook verification handshake (Meta calls this once when you save the webhook config)
   app.get("/webhook", (req: Request, res: Response) => {
@@ -74,8 +91,7 @@ async function handleWebhookPayload(payload: WhatsAppWebhookPayload): Promise<vo
       const messages = value.messages ?? [];
 
       for (const message of messages) {
-        if (processedMessageIds.has(message.id)) continue;
-        processedMessageIds.add(message.id);
+        if (isDuplicateMessage(message.id)) continue;
 
         if (message.type !== "text" || !message.text) {
           await sendWhatsAppText(
@@ -98,7 +114,11 @@ async function handleOrderMessage(
   profileName?: string
 ): Promise<void> {
   try {
-    const parsed = await parseOrderMessage(text, profileName);
+    const catalogTitles = await getCatalogTitles().catch((err) => {
+      console.error("Failed to fetch catalog titles, parsing without catalog context:", err);
+      return [];
+    });
+    const parsed = await parseOrderMessage(text, profileName, catalogTitles);
 
     if (!parsed.is_order || parsed.items.length === 0) {
       return; // not an order, stay silent (e.g. greetings, questions)

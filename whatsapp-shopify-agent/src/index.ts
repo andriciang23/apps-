@@ -16,6 +16,13 @@ if (missing.length > 0) {
   process.exit(1);
 }
 
+if (!process.env.META_APP_SECRET) {
+  console.warn(
+    "META_APP_SECRET is not set: incoming webhook signatures will not be verified. " +
+      "Set it before deploying to production."
+  );
+}
+
 const port = Number(process.env.PORT) || 3000;
 const app = createServer();
 
