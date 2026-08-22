@@ -2,6 +2,20 @@ import type Anthropic from "@anthropic-ai/sdk";
 
 /** Tool definitions as the model sees them. Behaviour lives in dispatch.ts. */
 
+// facts.py takes a SECTION name (e.g. "wholesale"), not a SKU. An unrecognised
+// value makes it print its banner and nothing else, which the bridge reports as
+// a failure rather than an empty success.
+const SECTION_SCHEMA = {
+  type: "object" as const,
+  properties: {
+    section: {
+      type: "string",
+      description: "Optional report section, e.g. 'wholesale'. Omit for the full report.",
+    },
+  },
+  additionalProperties: false,
+};
+
 const SKU_SCHEMA = {
   type: "object" as const,
   properties: { sku: { type: "string", description: "SKU or product name. Omit for all." } },
@@ -13,8 +27,10 @@ export const TOOLS: Anthropic.Tool[] = [
     name: "get_facts",
     description:
       "Live stock, cost, margin and reorder flags. The only permitted source for these figures. " +
-      "Returns {ok, ran, data, reason}; ran=false means the check did NOT run and the answer is unknown.",
-    input_schema: SKU_SCHEMA,
+      "Returns {ok, ran, data, reason}; ran=false means the check did NOT run and the answer is unknown. " +
+      "data.warnings carries staleness and truncation notes — repeat them to the owner whenever you " +
+      "quote a figure they affect.",
+    input_schema: SECTION_SCHEMA,
   },
   {
     name: "get_velocity",

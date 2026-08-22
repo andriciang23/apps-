@@ -28,14 +28,35 @@ and being read as "nothing wrong". Callers must always be able to tell those apa
 
 ## Output parsing
 
-If a script prints JSON, `data` is the parsed object. Otherwise the raw stdout is
-passed through as `data.raw` — untouched, not guessed at. Inventing a parser for a
-format we have not seen is how a tool starts quietly reporting wrong numbers.
+`facts.py` prints a human report, not JSON, so `facts_parser.py` reads it into
+named fields: stock groups with quantities, reorder points and cover; the margin
+table; freshness; and the rules version. The raw text is always kept in
+`data.raw`, so a parse miss loses nothing.
 
-**Upgrade worth making:** add a `--json` flag to `facts.py` and `velocity.py`. The
-assistant can then read named fields (quantity, `as_of`, `days_cover`,
-`one_order_from_zero`) instead of prose, which makes its answers more precise and
-lets it cite time basis exactly.
+Two flags exist because getting them wrong costs money:
+
+- **`data.truncated`** — the report abbreviates long lists as `...and 16 more`.
+  Those SKUs are absent from the output, and absent must never read as fine. The
+  parser records which list was cut and how many rows are hidden.
+- **`data.warnings`** — promoted from the report's own caveats. As of 22 Aug 2026
+  it carries *"90d demand snapshot: 2026-06-29 (54 days old) — STALE, refresh
+  before trusting cover/ROP"*, so every cover figure inherits that caveat. The
+  assistant is instructed to repeat these when quoting an affected number.
+
+### `facts.py` takes a section, not a SKU
+
+`facts.py wholesale` selects a section. An unrecognised argument makes it print
+its banner and exit 0 — `facts.py --json` did exactly that. The runner detects a
+header-only report and returns `ok: false` with a reason, because a successful
+empty result is indistinguishable from "nothing is wrong".
+
+`velocity.py`'s arguments are **not yet verified** — the tool passes an optional
+`sku` on the assumption it filters that way. Confirm before relying on it.
+
+## Tests
+
+`python3 -m unittest test_facts_parser -v` — 13 tests against real 22 Aug 2026
+output, covering the header-only case and truncation detection.
 
 ## Setup (on Andri's PC)
 

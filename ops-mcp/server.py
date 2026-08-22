@@ -23,12 +23,19 @@ from runner import ToolResult, run_script
 
 server = Server("hojichaya-ops")
 
-_SKU_ARG = {
+# facts.py takes a SECTION name (e.g. "wholesale"), not a SKU. An unknown value
+# makes it print its banner and nothing else, which the runner reports as a
+# failure rather than an empty success.
+_SECTION_ARG = {
     "type": "object",
     "properties": {
-        "sku": {
+        "section": {
             "type": "string",
-            "description": "Optional SKU or product name to filter to. Omit for all rows.",
+            "description": (
+                "Optional section of the report, e.g. 'wholesale'. Omit for the full "
+                "report, which is the safe default. An unrecognised name returns an "
+                "error, not an empty result."
+            ),
         }
     },
     "additionalProperties": False,
@@ -42,9 +49,11 @@ TOOLS = [
         description=(
             "Live stock, cost, margin and reorder flags from facts.py. The only "
             "permitted source for these figures. Returns {ok, ran, data, reason}; "
-            "ran=false means the check did NOT happen and the answer is unknown."
+            "ran=false means the check did NOT happen and the answer is unknown. "
+            "data.warnings carries staleness and truncation notes that MUST be "
+            "repeated to the owner when quoting any affected figure."
         ),
-        inputSchema=_SKU_ARG,
+        inputSchema=_SECTION_ARG,
     ),
     Tool(
         name="get_velocity",
@@ -53,7 +62,7 @@ TOOLS = [
             "the ONE ORDER FROM ZERO flag. Use this for every cover claim — the "
             "ledger's own demand column is Shopify-only and overstates cover."
         ),
-        inputSchema=_SKU_ARG,
+        inputSchema=_SECTION_ARG,
     ),
     Tool(
         name="get_repack_plan",
@@ -93,9 +102,9 @@ async def call_tool(name: str, arguments: dict[str, Any] | None) -> list[TextCon
         result = ToolResult(ok=False, ran=False, reason=f"unknown tool: {name}")
     else:
         args = []
-        sku = (arguments or {}).get("sku")
-        if sku:
-            args.append(str(sku))
+        section = (arguments or {}).get("section")
+        if section:
+            args.append(str(section))
         result = await asyncio.to_thread(run_script, script, args)
 
     return [TextContent(type="text", text=json.dumps(result.to_dict()))]

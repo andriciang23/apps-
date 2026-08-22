@@ -22,6 +22,8 @@ from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import Any
 
+from facts_parser import parse_facts
+
 DEFAULT_TIMEOUT_S = 120
 
 
@@ -111,4 +113,21 @@ def run_script(script: str, args: list[str] | None = None,
     try:
         return ToolResult(ok=True, ran=True, data=json.loads(stdout))
     except json.JSONDecodeError:
-        return ToolResult(ok=True, ran=True, data={"raw": stdout})
+        pass
+
+    parsed = parse_facts(stdout)
+
+    # facts.py prints its banner and exits 0 even when the argument names no
+    # known section — `facts.py --json` did exactly that. Reporting it as a
+    # successful empty result would let a typo read as "nothing wrong", which is
+    # the failure this whole contract exists to prevent.
+    if parsed["header_only"]:
+        return ToolResult(
+            ok=False, ran=True, data=None,
+            reason=(
+                f"{script} ran but printed no data section. The argument probably "
+                f"names no known section. Do not read this as 'nothing to report'."
+            ),
+        )
+
+    return ToolResult(ok=True, ran=True, data=parsed)

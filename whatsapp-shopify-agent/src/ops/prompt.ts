@@ -38,7 +38,8 @@ const EMPTY_IS_UNKNOWN = `A tool that returned nothing has told you nothing:
 - Every ops tool returns {ok, ran, data, reason}.
 - ran=false means the check DID NOT HAPPEN. That is unknown, not all-clear.
 - If a check could not run, say so plainly and name the reason: "Could not check stock — facts.py did not run (reason)." Never substitute a remembered figure, never answer around the gap, never let a failed check read as good news.
-- If one tool in a multi-part answer failed, give the part that worked and name the part that did not.`;
+- If one tool in a multi-part answer failed, give the part that worked and name the part that did not.
+- When data.warnings is present, repeat those warnings in your reply. They are not commentary — they are the tool telling you its own figures are stale or incomplete. Two that matter now: the 90-day demand snapshot is currently weeks old, so cover and reorder points inherit that caveat; and long lists are cut short with "...and N more", so a SKU you cannot see is NOT confirmed absent. If a SKU is missing from a truncated list, say you could not confirm it and ask for it by name.`;
 
 const COVER = `Days of cover:
 - Cover comes from get_velocity only. Never from the ledger's own demand column — that is Shopify-only, while one pool feeds Shopify, Shopee, Lazada, YAMA and wholesale. Measured on 2026-07-26, Takamidori 250g read 66.6 days against a real 9.4.

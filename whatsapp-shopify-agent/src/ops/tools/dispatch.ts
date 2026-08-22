@@ -28,6 +28,8 @@ type Args = Record<string, unknown>;
 export async function dispatch(name: string, args: Args, sender: string): Promise<unknown> {
   switch (name) {
     case "get_facts":
+      return callOpsTool(name, args.section ? { section: String(args.section) } : {});
+
     case "get_velocity":
       return callOpsTool(name, args.sku ? { sku: String(args.sku) } : {});
 
