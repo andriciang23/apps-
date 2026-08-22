@@ -69,9 +69,13 @@ From `PERMANENT_RULES.md`, in `ops/prompt.ts` and `config/shorthand.ts`:
 3. Set up `ops-mcp/` (see `../ops-mcp/README.md`) and verify its numbers against
    the scripts run directly.
 4. `npm run build && npm start`
-5. Expose it: `cloudflared tunnel --url http://localhost:3000`
+5. Expose it. For a first test `cloudflared tunnel --url http://localhost:3000`
+   is fine, but it issues a **new random URL each run** — set up a named tunnel
+   before relying on it (`../scripts/README.md`), or every restart silently stops
+   WhatsApp delivery.
 6. Register the webhook with Meta: callback `https://<tunnel>/webhook`, your
    verify token, subscribe to `messages`.
+7. Install as a service so it survives reboots: `../scripts/README.md`.
 
 Shopify custom app scopes: `read_products`, `read_customers`, `read_inventory`,
 `write_draft_orders`.
