@@ -1,28 +1,38 @@
+import { getAccessToken, invalidateToken, shopifyDomain } from "./auth.js";
+
 const API_VERSION = "2026-07";
 
-function getConfig() {
-  const domain = process.env.SHOPIFY_STORE_DOMAIN;
-  const token = process.env.SHOPIFY_ADMIN_ACCESS_TOKEN;
-  if (!domain || !token) {
-    throw new Error("SHOPIFY_STORE_DOMAIN and SHOPIFY_ADMIN_ACCESS_TOKEN must be set");
-  }
-  return { domain, token };
-}
-
+/**
+ * Call the Admin GraphQL API.
+ *
+ * Retries once on a 401 with a fresh token. Tokens from the client credentials
+ * grant expire after 24 hours, and a token can also be cut short by the app's
+ * scopes changing or the app being reinstalled — so a 401 is an expected event
+ * to recover from, not an error to surface. A second 401 is real and is raised.
+ */
 export async function shopifyGraphQL<T>(
   query: string,
   variables: Record<string, unknown> = {}
 ): Promise<T> {
-  const { domain, token } = getConfig();
-  const res = await fetch(`https://${domain}/admin/api/${API_VERSION}/graphql.json`, {
-    method: "POST",
-    headers: { "X-Shopify-Access-Token": token, "Content-Type": "application/json" },
-    body: JSON.stringify({ query, variables }),
-  });
+  const url = `https://${shopifyDomain()}/admin/api/${API_VERSION}/graphql.json`;
+
+  const send = async (token: string) =>
+    fetch(url, {
+      method: "POST",
+      headers: { "X-Shopify-Access-Token": token, "Content-Type": "application/json" },
+      body: JSON.stringify({ query, variables }),
+    });
+
+  let res = await send(await getAccessToken());
+
+  if (res.status === 401) {
+    invalidateToken();
+    res = await send(await getAccessToken());
+  }
 
   const json = (await res.json()) as { data?: T; errors?: unknown };
   if (!res.ok || json.errors) {
-    throw new Error(`Shopify GraphQL error: ${JSON.stringify(json.errors ?? json)}`);
+    throw new Error(`Shopify GraphQL error (${res.status}): ${JSON.stringify(json.errors ?? json)}`);
   }
   return json.data as T;
 }

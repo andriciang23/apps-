@@ -77,14 +77,31 @@ From `PERMANENT_RULES.md`, in `ops/prompt.ts` and `config/shorthand.ts`:
    verify token, subscribe to `messages`.
 7. Install as a service so it survives reboots: `../scripts/README.md`.
 
-Shopify custom app scopes: `read_products`, `read_customers`, `read_inventory`,
-`write_draft_orders`.
+### Shopify credentials
+
+Shopify stopped allowing new admin-created custom apps on **1 January 2026**, so
+`Settings > Apps > Develop apps` no longer creates one and there is no `shpat_...`
+token to copy. Apps are created in the Dev Dashboard and exchange a client ID and
+secret for a token lasting 24 hours, which `src/shopify/auth.ts` refreshes itself.
+
+1. **dev.shopify.com/dashboard** → **Create app**
+2. **Versions** tab → set scopes `read_products`, `read_customers`,
+   `read_inventory`, `write_draft_orders` → **Release**
+3. **Home** → **Install app** → select the store → **Install**
+4. **Settings** → copy **Client ID** and **Client secret** into `.env`
+
+If the store is not offered at step 3, the app and the store are in different Dev
+Dashboard organizations — client credentials cannot cross organizations. Compare
+the organization ID in the dashboard URL for each.
 
 ## Tests
 
-`npm test` — 22 tests over the four gates plus the catalogue rules. They cover the
+`npm test` — 34 tests over the four gates, the catalogue rules, and Shopify token
+handling. They cover the
 cases that cost money: wrong-length signatures, allowlist prefix matching,
-approval replay and tampering, registry escape attempts, and HJPDDR vs hjdr.
+approval replay and tampering, registry escape attempts, HJPDDR vs hjdr, and
+token expiry — which would otherwise surface a full day after deployment as the
+assistant apparently forgetting Shopify exists.
 
 ## Verify before trusting it
 

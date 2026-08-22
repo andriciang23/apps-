@@ -33,10 +33,15 @@ async function checkShopify(): Promise<Check> {
     const data = await shopifyGraphQL<{ shop: { name: string } }>("{ shop { name } }");
     return { name: "shopify", ok: true, detail: `connected to ${data.shop.name}` };
   } catch (err) {
+    // This check also exercises the client-credentials token exchange, so it is
+    // the first place a bad client ID or secret shows up. "Cannot reach Shopify"
+    // and "Shopify rejected the credentials" need different fixes — say which.
+    const message = err instanceof Error ? err.message : String(err);
+    const credentialProblem = /token request failed|CLIENT_ID|CLIENT_SECRET/i.test(message);
     return {
       name: "shopify",
       ok: false,
-      detail: err instanceof Error ? err.message : String(err),
+      detail: credentialProblem ? `credentials rejected — ${message}` : message,
     };
   }
 }
