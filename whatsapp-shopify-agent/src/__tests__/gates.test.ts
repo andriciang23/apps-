@@ -137,13 +137,13 @@ describe("approval gate", () => {
 
 describe("file registry", () => {
   before(() => {
-    process.env.FILE_REGISTRY_ROOT = "/srv/hojichaya-files";
+    process.env.FILE_REGISTRY_ROOTS = "/srv/wholesale;/srv/decks";
   });
 
   it("resolves a known key and its aliases", () => {
     assert.equal(findEntry("wholesale-pricelist")?.key, "wholesale-pricelist");
     assert.equal(findEntry("pricelist")?.key, "wholesale-pricelist");
-    assert.equal(findEntry("send me the pitch deck")?.key, "ombak-deck");
+    assert.equal(findEntry("send me the catalogue")?.key, "profile-catalogue");
   });
 
   it("refuses anything not in the registry", () => {
@@ -152,21 +152,33 @@ describe("file registry", () => {
     assert.equal(findEntry("ledger.xlsx"), undefined);
   });
 
-  it("refuses a registry entry that escapes the root", () => {
+  it("accepts a path inside any permitted root", () => {
+    assert.equal(
+      resolvePath({ key: "ok", aliases: [], path: "/srv/decks/ombak.pdf", label: "ok" }),
+      "/srv/decks/ombak.pdf"
+    );
+  });
+
+  it("refuses a path outside every permitted root", () => {
+    for (const escape of ["/etc/passwd", "/srv/wholesale/../../etc/passwd", "/srv/other/x.pdf"]) {
+      assert.throws(
+        () => resolvePath({ key: "evil", aliases: [], path: escape, label: "evil" }),
+        /resolves outside every permitted root/,
+        escape
+      );
+    }
+  });
+
+  it("refuses a root that is exactly the target, not a parent", () => {
+    // A bare root must not itself be sendable.
     assert.throws(
-      () =>
-        resolvePath({
-          key: "evil",
-          aliases: [],
-          path: "../../etc/passwd",
-          label: "evil",
-        }),
-      /escapes the registry root/
+      () => resolvePath({ key: "root", aliases: [], path: "/srv/decks", label: "root" }),
+      /resolves outside every permitted root/
     );
   });
 
   after(() => {
-    delete process.env.FILE_REGISTRY_ROOT;
+    delete process.env.FILE_REGISTRY_ROOTS;
   });
 });
 

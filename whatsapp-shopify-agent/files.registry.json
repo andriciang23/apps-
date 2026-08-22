@@ -1,30 +1,19 @@
 {
-  "_comment": "Only files listed here can be sent. Paths are resolved against FILE_REGISTRY_ROOT and may not escape it. staleAgainst names a source whose date makes this file out of date if it is newer.",
+  "_comment": "Only files listed here can be sent. Each path must resolve inside one of FILE_REGISTRY_ROOTS. staleAgainst marks a file whose numbers go out of date — the assistant warns before sending it.",
   "files": [
     {
       "key": "wholesale-pricelist",
-      "aliases": ["pricelist", "price list", "wholesale price", "wholesale pricing", "harga"],
-      "path": "HojichaYa_Wholesale_Pricelist.pdf",
-      "label": "Wholesale pricelist",
-      "staleAgainst": "latest supplier invoice or FX transfer"
+      "aliases": ["pricelist", "price list", "wholesale price", "wholesale pricing", "prices", "harga"],
+      "path": "W:\\HojichaYa Teas\\Wholesale\\HojichaYa Wholesale Pricelist\\2026\\2026 HojichaYa Wholesale Pricelist.pdf",
+      "label": "2026 Wholesale Pricelist",
+      "staleAgainst": "the latest supplier invoice or FX transfer"
     },
     {
-      "key": "ombak-deck",
-      "aliases": ["ombak", "ombak klcc", "pitch deck", "deck", "ombak pitch"],
-      "path": "Ombak KLCC/HojichaYa_Ombak_Pitch.pdf",
-      "label": "Ombak KLCC pitch deck"
-    },
-    {
-      "key": "brand-deck",
-      "aliases": ["brand deck", "company profile", "profile"],
-      "path": "HojichaYa_Brand_Deck.pdf",
-      "label": "Brand deck"
-    },
-    {
-      "key": "wholesale-catalogue",
-      "aliases": ["catalogue", "catalog", "product list", "product catalogue"],
-      "path": "HojichaYa_Wholesale_Catalogue.pdf",
-      "label": "Wholesale catalogue"
+      "key": "profile-catalogue",
+      "aliases": ["profile", "catalogue", "catalog", "company profile", "brand deck", "product list", "product catalogue"],
+      "path": "W:\\HojichaYa Teas\\Wholesale\\HojichaYa Wholesale Pricelist\\2026\\2026 HojichaYa Profile + Catalogue.pdf",
+      "label": "2026 Profile + Catalogue",
+      "staleAgainst": "the latest supplier invoice or FX transfer"
     }
   ]
 }

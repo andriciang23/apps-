@@ -41,24 +41,42 @@ export function findEntry(query: string): RegistryEntry | undefined {
   );
 }
 
-function registryRoot(): string {
-  const root = process.env.FILE_REGISTRY_ROOT;
-  if (!root) throw new Error("FILE_REGISTRY_ROOT is not set");
-  return path.resolve(root);
+function registryRoots(): string[] {
+  const raw = process.env.FILE_REGISTRY_ROOTS;
+  if (!raw?.trim()) throw new Error("FILE_REGISTRY_ROOTS is not set");
+  // Semicolon-separated: Windows paths contain colons, so a colon cannot separate them.
+  const roots = raw
+    .split(";")
+    .map((r) => r.trim())
+    .filter(Boolean)
+    .map((r) => path.resolve(r));
+  if (roots.length === 0) throw new Error("FILE_REGISTRY_ROOTS is empty");
+  return roots;
+}
+
+function isInside(root: string, target: string): boolean {
+  const rel = path.relative(root, target);
+  return rel !== "" && !rel.startsWith("..") && !path.isAbsolute(rel);
 }
 
 /**
- * Resolve a registry entry to an absolute path inside the root.
+ * Resolve a registry entry to an absolute path inside one of the permitted roots.
  *
- * The containment check is what stops a registry entry containing "../.." — the
- * registry is trusted, but trusted-and-verified costs nothing here.
+ * Several roots rather than one because the sendable files genuinely live on
+ * different drives — the wholesale pricelist on W:, decks on C:. The containment
+ * check is the second line of defence behind the registry allowlist: it stops a
+ * registry entry containing "..\..", which the registry being trusted does not
+ * by itself rule out.
  */
 export function resolvePath(entry: RegistryEntry): string {
-  const root = registryRoot();
-  const full = path.resolve(root, entry.path);
-  const rel = path.relative(root, full);
-  if (rel.startsWith("..") || path.isAbsolute(rel)) {
-    throw new Error(`registry entry ${entry.key} escapes the registry root`);
+  const roots = registryRoots();
+  const full = path.resolve(entry.path);
+
+  if (!roots.some((root) => isInside(root, full))) {
+    throw new Error(
+      `registry entry ${entry.key} resolves outside every permitted root ` +
+        `(${roots.join("; ")})`
+    );
   }
   return full;
 }

@@ -40,7 +40,8 @@ instruction is a request; a code gate is a guarantee.
    they were shown, so changing a quantity after the yes invalidates it. Single
    use, 15-minute expiry. The model cannot approve its own work.
 4. **Registry** (`ops/files.ts`) — only listed keys can be sent, and the resolved
-   path must stay inside `FILE_REGISTRY_ROOT`. A path in a message is never read.
+   path must sit inside one of `FILE_REGISTRY_ROOTS`. A path in a message is
+   never read.
 
 ## Rules encoded
 
@@ -60,6 +61,39 @@ From `PERMANENT_RULES.md`, in `ops/prompt.ts` and `config/shorthand.ts`:
   without one is refused rather than given a broken draft — billing cannot be
   added after creation.
 - The assistant never writes inventory. Ledger → Shopify stays one-way.
+
+## Sendable files
+
+`files.registry.json` lists what can be sent. Currently:
+
+| Key | File |
+|---|---|
+| `wholesale-pricelist` | `2026 HojichaYa Wholesale Pricelist.pdf` |
+| `profile-catalogue` | `2026 HojichaYa Profile + Catalogue.pdf` |
+
+Both are marked `staleAgainst` the latest supplier invoice or FX transfer, so the
+assistant warns before sending either if it predates one. Both carry wholesale
+prices, and with auction tea roughly doubling again in 2026 a quietly stale
+pricelist reaching a café account is a real way to lose margin.
+
+To add a file: add an entry, and make sure its folder is inside
+`FILE_REGISTRY_ROOTS`.
+
+### ⚠ Mapped drives and Windows services
+
+These files live on **W:**, a mapped drive. **A Windows service running as
+LOCAL SYSTEM cannot see drive letters mapped in your user session** — the send
+fails with "not found" even though the file is plainly there in Explorer. Two
+fixes:
+
+- Use the UNC path (`\\server\share\...`) in `FILE_REGISTRY_ROOTS` and the
+  registry, or
+- Set both services to log on as your own Windows account (`services.msc` →
+  right-click → Properties → Log On).
+
+The startup self-check verifies every registered file is readable and logs each
+as present or missing, so this shows up at boot rather than the first time
+someone asks for a file.
 
 ## Setup
 

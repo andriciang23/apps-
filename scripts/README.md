@@ -74,6 +74,33 @@ Because the address is now permanent, this is the last time you touch it.
 
 ---
 
+## Step 3b — If your files are on a mapped drive (W:)
+
+The wholesale pricelist and catalogue live on **W:**. A Windows service normally
+runs as LOCAL SYSTEM, which **cannot see drive letters you mapped in Explorer**.
+Left alone, asking for the pricelist returns "not found" even though the file is
+obviously there.
+
+Fix it once, after installing the services:
+
+1. Press `Windows key`, type `services.msc`, press Enter
+2. Find **hojichaya-ops-assistant** → right-click → **Properties**
+3. **Log On** tab → **This account** → enter your Windows username and password
+4. **OK**, then right-click the service → **Restart**
+
+Alternatively, use the UNC path (`\\server\share\...`) in `FILE_REGISTRY_ROOTS`
+and `files.registry.json` instead of `W:\`, which works as LOCAL SYSTEM.
+
+To confirm it worked, check `logs\assistant.out.log` for:
+
+```
+[startup] OK   file registry: 2 files present
+```
+
+`FAIL … missing:` means the service still cannot see the drive.
+
+---
+
 ## Step 4 — Automatic down-alert
 
 Tells you on WhatsApp if the assistant stops working, instead of you finding out
