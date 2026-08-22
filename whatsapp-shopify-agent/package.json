@@ -1,16 +1,19 @@
 {
-  "name": "whatsapp-shopify-agent",
+  "name": "hojichaya-ops-assistant",
   "version": "1.0.0",
   "private": true,
-  "description": "WhatsApp agent that parses order messages with Claude and creates Shopify draft orders",
+  "description": "WhatsApp ops assistant for HojichaYa Teas: stock from the ledger, gated Shopify draft orders, registry file sending",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc -p tsconfig.json",
-    "start": "node dist/index.js"
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/index.js",
+    "test": "tsx --test src/__tests__/*.test.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.32.0",
+    "@anthropic-ai/sdk": "^0.120.0",
+    "@modelcontextprotocol/sdk": "^1.30.0",
     "dotenv": "^16.4.5",
     "express": "^4.21.0"
   },

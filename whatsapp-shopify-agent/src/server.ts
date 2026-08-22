@@ -1,16 +1,14 @@
 import crypto from "node:crypto";
 import express, { type Request, type Response } from "express";
 import { sendWhatsAppText } from "./whatsapp.js";
-import { matchLineItems, createDraftOrder, getCatalogTitles } from "./shopify.js";
-import { parseOrderMessage } from "./orderParser.js";
-import type { WhatsAppWebhookPayload } from "./types.js";
+import { handleOwnerMessage, isOwner } from "./ops/router.js";
+import type { WhatsAppMessage, WhatsAppWebhookPayload } from "./types.js";
 
 interface RawBodyRequest extends Request {
   rawBody?: Buffer;
 }
 
-// Meta retries webhook delivery for a limited window, so a short-lived
-// dedup map (rather than an ever-growing Set) is enough to avoid double-processing.
+/** Meta retries for a bounded window, so a TTL map is enough — no unbounded Set. */
 const PROCESSED_ID_TTL_MS = 10 * 60 * 1000;
 const processedMessageIds = new Map<string, number>();
 
@@ -39,17 +37,15 @@ export function createServer() {
     res.status(200).send("ok");
   });
 
-  // Webhook verification handshake (Meta calls this once when you save the webhook config)
   app.get("/webhook", (req: Request, res: Response) => {
-    const mode = req.query["hub.mode"];
-    const token = req.query["hub.verify_token"];
-    const challenge = req.query["hub.challenge"];
+    const verifyToken = process.env.WHATSAPP_VERIFY_TOKEN;
+    const matches =
+      req.query["hub.mode"] === "subscribe" &&
+      typeof verifyToken === "string" &&
+      req.query["hub.verify_token"] === verifyToken;
 
-    if (mode === "subscribe" && token === process.env.WHATSAPP_VERIFY_TOKEN) {
-      res.status(200).send(challenge);
-    } else {
-      res.sendStatus(403);
-    }
+    if (matches) res.status(200).send(req.query["hub.challenge"]);
+    else res.sendStatus(403);
   });
 
   app.post("/webhook", (req: RawBodyRequest, res: Response) => {
@@ -58,8 +54,7 @@ export function createServer() {
       return;
     }
 
-    // Ack immediately; Meta expects a fast 200 and will retry on timeout.
-    res.sendStatus(200);
+    res.sendStatus(200); // Meta expects a fast ack and retries on timeout
 
     handleWebhookPayload(req.body as WhatsAppWebhookPayload).catch((err) => {
       console.error("Failed to handle webhook payload:", err);
@@ -69,17 +64,34 @@ export function createServer() {
   return app;
 }
 
-function verifySignature(req: RawBodyRequest): boolean {
+/**
+ * Verify the Meta signature.
+ *
+ * Two deliberate choices here, both fixing real holes:
+ *
+ * 1. A missing META_APP_SECRET returns false, it does not pass. The previous
+ *    behaviour was to return true and accept anything — with the owner allowlist
+ *    as the only other defence, an unverified payload could claim any sender.
+ *    Startup also refuses without the secret, so this is defence in depth.
+ * 2. Lengths are compared before timingSafeEqual, which throws on a mismatch.
+ *    The header is attacker-controlled, so an unequal-length signature would
+ *    otherwise become an uncaught throw and a 500 instead of a clean 401.
+ */
+export function verifySignature(req: RawBodyRequest): boolean {
   const appSecret = process.env.META_APP_SECRET;
-  if (!appSecret) return true; // signature check optional but recommended
+  if (!appSecret) return false;
 
-  const signatureHeader = req.header("x-hub-signature-256");
-  if (!signatureHeader || !req.rawBody) return false;
+  const header = req.header("x-hub-signature-256");
+  if (!header || !req.rawBody) return false;
 
   const expected =
     "sha256=" + crypto.createHmac("sha256", appSecret).update(req.rawBody).digest("hex");
 
-  return crypto.timingSafeEqual(Buffer.from(signatureHeader), Buffer.from(expected));
+  const received = Buffer.from(header);
+  const computed = Buffer.from(expected);
+  if (received.length !== computed.length) return false;
+
+  return crypto.timingSafeEqual(received, computed);
 }
 
 async function handleWebhookPayload(payload: WhatsAppWebhookPayload): Promise<void> {
@@ -87,78 +99,40 @@ async function handleWebhookPayload(payload: WhatsAppWebhookPayload): Promise<vo
 
   for (const entry of payload.entry ?? []) {
     for (const change of entry.changes ?? []) {
-      const value = change.value;
-      const messages = value.messages ?? [];
-
-      for (const message of messages) {
+      for (const message of change.value.messages ?? []) {
         if (isDuplicateMessage(message.id)) continue;
-
-        if (message.type !== "text" || !message.text) {
-          await sendWhatsAppText(
-            message.from,
-            "Sorry, I can only read text messages for orders right now. Please type your order as text."
-          );
-          continue;
-        }
-
-        const profileName = value.contacts?.find((c) => c.wa_id === message.from)?.profile.name;
-        await handleOrderMessage(message.from, message.text.body, profileName);
+        await handleMessage(message);
       }
     }
   }
 }
 
-async function handleOrderMessage(
-  from: string,
-  text: string,
-  profileName?: string
-): Promise<void> {
+async function handleMessage(message: WhatsAppMessage): Promise<void> {
+  // Anyone not on the allowlist gets no reply at all. Silence rather than a
+  // refusal: a stranger should not learn that this number runs anything.
+  if (!isOwner(message.from)) {
+    console.warn(`Ignored message from non-owner ${redact(message.from)}`);
+    return;
+  }
+
+  if (message.type !== "text" || !message.text) {
+    await sendWhatsAppText(message.from, "I can only read text messages at the moment.");
+    return;
+  }
+
   try {
-    const catalogTitles = await getCatalogTitles().catch((err) => {
-      console.error("Failed to fetch catalog titles, parsing without catalog context:", err);
-      return [];
-    });
-    const parsed = await parseOrderMessage(text, profileName, catalogTitles);
-
-    if (!parsed.is_order || parsed.items.length === 0) {
-      return; // not an order, stay silent (e.g. greetings, questions)
-    }
-
-    const matchedItems = await matchLineItems(parsed.items);
-
-    const noteLines = [
-      `WhatsApp order from ${profileName ?? "unknown"} (${from})`,
-      parsed.shipping_address ? `Address: ${parsed.shipping_address}` : null,
-      parsed.notes ? `Notes: ${parsed.notes}` : null,
-      `Original message: "${text}"`,
-    ].filter(Boolean);
-
-    const draftOrder = await createDraftOrder(matchedItems, noteLines.join("\n"));
-
-    await sendWhatsAppText(from, buildSummaryMessage(draftOrder, matchedItems));
+    const reply = await handleOwnerMessage(message.from, message.text.body);
+    await sendWhatsAppText(message.from, reply);
   } catch (err) {
-    console.error("Error processing order message:", err);
+    console.error("Assistant failed:", err);
     await sendWhatsAppText(
-      from,
-      "Sorry, something went wrong while processing your order. We'll follow up shortly."
+      message.from,
+      "Something went wrong and I could not answer. Nothing was written."
     ).catch(() => {});
   }
 }
 
-function buildSummaryMessage(
-  draftOrder: { name: string; invoiceUrl: string; totalPrice: string },
-  matchedItems: Awaited<ReturnType<typeof matchLineItems>>
-): string {
-  const lines = [`Order received! Draft ${draftOrder.name} created for review.`, ""];
-
-  for (const item of matchedItems) {
-    if (item.unmatched) {
-      lines.push(`- ${item.requested.product_query} x${item.requested.quantity} (could not match product, flagged for manual review)`);
-    } else {
-      lines.push(`- ${item.matchedTitle} x${item.requested.quantity} @ ${item.matchedPrice}`);
-    }
-  }
-
-  lines.push("", `Total: ${draftOrder.totalPrice}`, `Review: ${draftOrder.invoiceUrl}`);
-  return lines.join("\n");
+/** Log enough to trace a message, never the number itself or its contents. */
+function redact(phone: string): string {
+  return `***${phone.slice(-4)}`;
 }
