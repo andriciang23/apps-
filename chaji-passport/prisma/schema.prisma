@@ -43,7 +43,7 @@ model Stamp {
   id         String   @id @default(cuid())
   shop       String
   customerId String // numeric Shopify customer id (from app proxy logged_in_customer_id)
-  kind       String // "cafe_drink" | "event" | "wheel_purchase"
+  kind       String // "cafe_drink" | "online_order" | "event"
   refCode    String // drink code, event stamp code, or product handle
   productId  String? // gid of the tea this stamp counts towards
   tableCode  String? // café table, for venue analytics

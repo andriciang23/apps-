@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#2C2E29"/>
+  <circle cx="256" cy="256" r="150" fill="none" stroke="#9A5A34" stroke-width="16"/>
+  <circle cx="256" cy="256" r="124" fill="#9A5A34"/>
+  <text x="256" y="262" text-anchor="middle" dominant-baseline="central" font-family="Hiragino Mincho ProN, Yu Mincho, Noto Serif JP, serif" font-weight="700" font-size="136" fill="#F6F1E7">茶</text>
+</svg>

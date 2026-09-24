@@ -46,3 +46,26 @@ describe("progress", () => {
     expect(newlyReached(before, stamp("c", "aka", "2026-09-26"))).toEqual([]);
   });
 });
+
+import { cardState, normaliseMyMobile } from "../passport";
+
+describe("cardState", () => {
+  it("rolls over after a reward is used", () => {
+    expect(cardState(5, 0)).toEqual({ onCard: 5, ready: false, toNext: 3 });
+    expect(cardState(8, 0)).toEqual({ onCard: 8, ready: true, toNext: 0 });
+    expect(cardState(10, 1)).toEqual({ onCard: 2, ready: false, toNext: 6 });
+  });
+});
+
+describe("normaliseMyMobile", () => {
+  it("matches the same number however it is typed", () => {
+    for (const n of ["012-345 6789", "+60 12 345 6789", "60123456789", "123456789"]) {
+      expect(normaliseMyMobile(n)).toBe("+60123456789");
+    }
+    expect(normaliseMyMobile("011-1234 5678")).toBe("+601112345678");
+  });
+
+  it("rejects landlines, foreign and empty numbers", () => {
+    for (const n of ["03-1234 5678", "+65 9123 4567", "", null]) expect(normaliseMyMobile(n)).toBeNull();
+  });
+});

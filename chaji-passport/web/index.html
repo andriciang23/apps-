@@ -1,0 +1,983 @@
+<title>HojichaYa Passport</title>
+<meta name="theme-color" content="#F6F1E7">
+<meta name="description" content="One stamp card for YAMA Café and hojichaya.com.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Mulish:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&family=Noto+Serif+JP:wght@500;700&display=swap">
+<style>
+/* HojichaYa design tokens (design-reference/colors_and_type.css). Components use var() only. */
+:root {
+  --sumi: #2C2E29; --sumi-soft: #3C3E38;
+  --matcha: #6F8038; --matcha-deep: #4E5B27; --matcha-bright: #8FA24C; --matcha-tint: #E7EAD7;
+  --hojicha: #9A5A34; --hojicha-deep: #6E3D22; --hojicha-tint: #EFE0D2;
+  --sencha: #A9B25C; --gold: #C99A3F;
+  --washi: #F6F1E7; --washi-deep: #EDE6D6; --surface: #FCFAF4;
+  --line: #E0D8C7; --line-strong: #CFC5AE;
+  --ink: #2C2E29; --ink-2: #595B50; --ink-3: #8A8B7E; --on-dark: #F6F1E7;
+  --error: #B23A2E;
+  --card-bg: #2C2E29; --card-ink: #F6F1E7; --card-ink-2: #CFC8B6; --card-line: #4A4C44;
+  --seal-yama: #9A5A34; --seal-online: #6F8038;
+  --scrim: rgba(34,35,30,.42);
+  --header-bg: rgba(246,241,231,.85);
+  --shadow-sm: 0 1px 2px rgba(44,46,41,.06);
+  --shadow-md: 0 6px 18px -8px rgba(44,46,41,.22);
+
+  --font-display: "Comfortaa", "Mulish", system-ui, sans-serif;
+  --font-body: "Mulish", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Spline Sans Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-jp: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
+  --r-xs: 3px; --r-sm: 6px; --r-md: 10px; --r-lg: 16px; --r-pill: 999px;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1); --dur: 240ms;
+  --tabbar-h: 64px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --washi: #2C2E29; --washi-deep: #25271F; --surface: #34362F;
+    --line: #45473F; --line-strong: #56584E;
+    --ink: #F6F1E7; --ink-2: #CFC8B6; --ink-3: #9C9A8A;
+    --matcha: #8FA24C; --matcha-deep: #A9B25C; --matcha-tint: #3A4128;
+    --hojicha: #C0804F; --hojicha-tint: #4A3526;
+    --card-bg: #1F201C; --card-line: #3E4038;
+    --seal-yama: #C0804F; --seal-online: #8FA24C;
+    --header-bg: rgba(44,46,41,.85);
+    --scrim: rgba(10,10,8,.6);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --washi: #2C2E29; --washi-deep: #25271F; --surface: #34362F;
+  --line: #45473F; --line-strong: #56584E;
+  --ink: #F6F1E7; --ink-2: #CFC8B6; --ink-3: #9C9A8A;
+  --matcha: #8FA24C; --matcha-deep: #A9B25C; --matcha-tint: #3A4128;
+  --hojicha: #C0804F; --hojicha-tint: #4A3526;
+  --card-bg: #1F201C; --card-line: #3E4038;
+  --seal-yama: #C0804F; --seal-online: #8FA24C;
+  --header-bg: rgba(44,46,41,.85);
+  --scrim: rgba(10,10,8,.6);
+}
+
+html, body { height: 100%; }
+body {
+  background: var(--washi); color: var(--ink);
+  font: 400 1rem/1.65 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+* { box-sizing: border-box; }
+::selection { background: var(--matcha-tint); }
+:focus-visible { outline: 2px solid var(--matcha); outline-offset: 2px; }
+button { font: inherit; color: inherit; }
+a { color: var(--matcha); }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.12; text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: 1.728rem; }
+h2 { font-size: 1.383rem; }
+h3 { font-size: 1.125rem; line-height: 1.3; }
+p { margin: 0; text-wrap: pretty; }
+.eyebrow { font-size: .75rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-3); }
+.eyebrow .jp { font-family: var(--font-jp); letter-spacing: .08em; text-transform: none; font-weight: 500; margin-right: .4em; }
+.muted { color: var(--ink-2); }
+.small { font-size: .875rem; }
+.xs { font-size: .75rem; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.jp { font-family: var(--font-jp); }
+
+/* Shell */
+.strip {
+  background: var(--hojicha-deep); color: var(--on-dark); text-align: center;
+  font-size: .75rem; letter-spacing: .04em; padding: 6px var(--sp-4);
+}
+.shell { max-width: 480px; margin: 0 auto; padding-inline: var(--sp-4); padding-block: 0 calc(var(--tabbar-h) + var(--sp-6) + env(safe-area-inset-bottom, 0px)); }
+.topbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3);
+  padding: var(--sp-3) 0; margin-bottom: var(--sp-2);
+  background: var(--header-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.wordmark { display: flex; align-items: baseline; gap: var(--sp-2); font-family: var(--font-display); font-weight: 700; font-size: 1.125rem; letter-spacing: -.01em; }
+.wordmark .x { color: var(--ink-3); font-weight: 500; font-size: .875rem; }
+.icon-btn {
+  width: 44px; height: 44px; display: grid; place-items: center;
+  border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--surface); cursor: pointer;
+  transition: background 140ms var(--ease);
+}
+.icon-btn:hover { background: var(--washi-deep); }
+svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+.view { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-6); animation: enter var(--dur) var(--ease); }
+.view-head { display: grid; gap: var(--sp-2); padding-top: var(--sp-2); }
+@keyframes enter { from { opacity: .4; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2);
+  min-height: 48px; padding: 0 var(--sp-5); border-radius: var(--r-sm);
+  border: 1px solid transparent; font-weight: 700; font-size: .95rem; text-decoration: none; cursor: pointer;
+  transition: background 140ms var(--ease), border-color 140ms var(--ease), opacity 140ms var(--ease);
+}
+.btn:active { opacity: .92; }
+.btn-primary { background: var(--matcha); color: var(--on-dark); }
+.btn-primary:hover { background: var(--matcha-deep); }
+:root[data-theme="dark"] .btn-primary, :root[data-theme="dark"] .btn-primary:hover { color: var(--sumi); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn-primary { color: var(--sumi); } }
+.btn-ghost { background: transparent; border-color: var(--line-strong); color: var(--ink); }
+.btn-ghost:hover { background: var(--washi-deep); }
+.btn-dark { background: var(--sumi); color: var(--on-dark); }
+.btn-block { width: 100%; }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+.link-btn { background: none; border: 0; padding: var(--sp-2) 0; color: var(--matcha); font-weight: 700; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: transparent; transition: text-decoration-color 140ms var(--ease); }
+.link-btn:hover { text-decoration-color: currentColor; }
+
+/* Passport card */
+.passport {
+  position: relative; overflow: hidden;
+  background: var(--card-bg); color: var(--card-ink);
+  border-radius: var(--r-lg); padding: var(--sp-5);
+  display: grid; gap: var(--sp-5);
+  box-shadow: var(--shadow-md);
+}
+.passport::after {
+  content: "通い帳"; position: absolute; right: -6px; bottom: -22px;
+  font-family: var(--font-jp); font-size: 5.5rem; line-height: 1; letter-spacing: -.04em;
+  color: var(--card-ink); opacity: .05; pointer-events: none; writing-mode: horizontal-tb;
+}
+.passport-top { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--sp-3); }
+.passport-brand { font-family: var(--font-display); font-weight: 700; font-size: .95rem; }
+.passport-brand small { display: block; font-family: var(--font-body); font-weight: 500; font-size: .75rem; color: var(--card-ink-2); letter-spacing: .04em; }
+.passport-no { white-space: nowrap; font-family: var(--font-mono); font-size: .8rem; color: var(--card-ink-2); letter-spacing: .06em; text-align: right; }
+.passport-name { font-family: var(--font-display); font-size: 1.383rem; font-weight: 600; }
+.seals { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-3); }
+.seal-slot { aspect-ratio: 1; max-width: 100%; display: grid; place-items: center; }
+.seal-slot .empty { width: 88%; aspect-ratio: 1; border-radius: 50%; border: 1.5px dashed var(--card-line); display: grid; place-items: center; color: var(--card-ink-2); font-family: var(--font-mono); font-size: .75rem; opacity: .8; }
+.passport-foot { display: flex; justify-content: space-between; align-items: baseline; gap: var(--sp-3); font-size: .875rem; color: var(--card-ink-2); }
+.passport-foot strong { color: var(--card-ink); font-family: var(--font-mono); font-weight: 500; font-size: 1rem; }
+
+/* Hanko seal */
+.seal { width: 88%; aspect-ratio: 1; display: block; }
+.seal.pop { animation: stamp 480ms var(--ease); }
+@keyframes stamp { 0% { transform: scale(1.35) rotate(-10deg); opacity: 0; } 60% { opacity: 1; } 100% { transform: scale(1) rotate(-4deg); } }
+.seal-mini { width: 28px; height: 28px; flex: none; }
+
+.legend { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-5); font-size: .875rem; color: var(--ink-2); }
+.legend span { display: inline-flex; align-items: center; gap: var(--sp-2); }
+
+.stack { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-3); }
+.stack-lg { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-5); }
+.passport, .panel { min-width: 0; }
+.row { display: flex; align-items: center; gap: var(--sp-3); }
+.between { justify-content: space-between; }
+
+/* Panels */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: var(--sp-5); display: grid; gap: var(--sp-3); }
+.panel-tint { background: var(--hojicha-tint); border-color: transparent; }
+.panel-matcha { background: var(--matcha-tint); border-color: transparent; }
+
+/* Tea rows / cards */
+.swatch { border-radius: var(--r-sm); position: relative; overflow: hidden; flex: none; }
+.swatch::after { content: ""; position: absolute; inset: 0; background: radial-gradient(120% 90% at 30% 20%, rgba(255,255,255,.28), transparent 60%); }
+.swatch.leaf::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(115deg, rgba(0,0,0,.07) 0 2px, transparent 2px 7px); }
+.swatch img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.tea-row { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) 0; border-bottom: 1px solid var(--line); background: none; border-left: 0; border-right: 0; border-top: 0; width: 100%; text-align: left; cursor: pointer; }
+.tea-row:last-child { border-bottom: 0; }
+.tea-row .swatch { width: 52px; height: 52px; }
+.tea-row .meta { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.tea-row .name { font-weight: 700; }
+.tea-row .sub { font-size: .875rem; color: var(--ink-2); }
+.pct { font-family: var(--font-mono); font-size: .875rem; color: var(--matcha); white-space: nowrap; }
+
+.chips { display: flex; gap: var(--sp-2); overflow-x: auto; padding-bottom: var(--sp-1); scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip {
+  flex: none; min-height: 40px; padding: 0 var(--sp-4); border-radius: var(--r-pill);
+  border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-2);
+  font-size: .875rem; font-weight: 600; cursor: pointer; white-space: nowrap;
+  transition: background 140ms var(--ease), color 140ms var(--ease), border-color 140ms var(--ease);
+}
+.chip .jp { margin-left: .35em; font-weight: 500; opacity: .8; }
+.chip[aria-pressed="true"] { background: var(--sumi); color: var(--on-dark); border-color: var(--sumi); }
+:root[data-theme="dark"] .chip[aria-pressed="true"] { background: var(--on-dark); color: var(--sumi); border-color: var(--on-dark); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .chip[aria-pressed="true"] { background: var(--on-dark); color: var(--sumi); border-color: var(--on-dark); } }
+
+.journal-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-3); }
+.jcard {
+  display: grid; gap: var(--sp-2); padding: var(--sp-3); text-align: left;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); cursor: pointer;
+  transition: border-color 140ms var(--ease);
+}
+.jcard:hover { border-color: var(--line-strong); }
+.jcard .swatch { width: 100%; aspect-ratio: 4 / 3; max-width: 100%; }
+.jcard.untried .swatch { filter: saturate(.25); opacity: .55; }
+.jcard .name { font-family: var(--font-display); font-weight: 600; font-size: .95rem; line-height: 1.3; }
+.jcard .when { font-size: .75rem; color: var(--ink-3); }
+.jcard .seal-on { position: absolute; right: 6px; bottom: 6px; width: 34px; height: 34px; z-index: 1; }
+
+.bar { height: 6px; border-radius: var(--r-pill); background: var(--washi-deep); overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--matcha); border-radius: inherit; transition: width 480ms var(--ease); }
+
+/* Flavour bars in sheet */
+.flav { display: grid; grid-template-columns: 7.5rem 1fr 1.5rem; align-items: center; gap: var(--sp-3); font-size: .875rem; }
+.flav .bar > i { background: var(--hojicha); }
+.flav .mono { text-align: right; color: var(--ink-2); }
+
+/* Tasting map */
+.map-wrap { position: relative; }
+.map { width: 100%; height: auto; display: block; touch-action: none; user-select: none; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); }
+.map .grid { stroke: var(--line); stroke-width: 1; }
+.map .axis-label { fill: var(--ink-3); font: 600 10px var(--font-body); letter-spacing: .12em; text-transform: uppercase; }
+.map .dot { fill: var(--ink-3); opacity: .55; }
+.map .dot.top { fill: var(--matcha); opacity: 1; }
+.map .dot-rank { fill: var(--on-dark); font: 700 9px var(--font-mono); pointer-events: none; }
+.map .marker-ring { fill: var(--surface); stroke: var(--sumi); stroke-width: 2; }
+:root[data-theme="dark"] .map .marker-ring { stroke: var(--on-dark); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .map .marker-ring { stroke: var(--on-dark); } }
+.map .marker-core { fill: var(--hojicha); }
+.map .marker { cursor: grab; }
+.map:focus-visible { outline: 2px solid var(--matcha); outline-offset: 2px; }
+
+/* Tab bar */
+.tabbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+  background: var(--header-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.tabbar nav { max-width: 480px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); height: var(--tabbar-h); }
+.tab { display: grid; place-items: center; align-content: center; gap: 2px; background: none; border: 0; cursor: pointer; color: var(--ink-3); font-size: .7rem; font-weight: 700; letter-spacing: .04em; transition: color 140ms var(--ease); position: relative; }
+.tab[aria-current="page"] { color: var(--ink); }
+.tab[aria-current="page"]::before { content: ""; position: absolute; top: 0; left: 30%; right: 30%; height: 2px; background: var(--matcha); }
+.tab .badge { position: absolute; top: 10px; left: calc(50% + 8px); width: 8px; height: 8px; border-radius: 50%; background: var(--gold); }
+
+/* Sheets */
+dialog.sheet {
+  width: min(480px, 100%); max-width: 100%; max-height: 92%; margin: auto auto 0; padding: 0;
+  border: 0; border-radius: var(--r-lg) var(--r-lg) 0 0; background: var(--washi); color: var(--ink);
+  box-shadow: var(--shadow-md);
+}
+dialog.sheet[open] { animation: rise var(--dur) var(--ease); }
+dialog.sheet::backdrop { background: var(--scrim); backdrop-filter: blur(2px); }
+@keyframes rise { from { transform: translateY(24px); opacity: .6; } to { transform: none; opacity: 1; } }
+.sheet-body { padding: var(--sp-5) var(--sp-4) calc(var(--sp-6) + env(safe-area-inset-bottom, 0px)); display: grid; gap: var(--sp-5); }
+.sheet-head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--sp-3); }
+.grabber { width: 40px; height: 4px; border-radius: 2px; background: var(--line-strong); margin: var(--sp-2) auto 0; }
+
+dialog.counter { --washi: #2C2E29; --washi-deep: #25271F; --surface: #34362F; --line: #45473F; --line-strong: #56584E; --ink: #F6F1E7; --ink-2: #CFC8B6; --ink-3: #9C9A8A; --matcha: #8FA24C; --matcha-deep: #A9B25C; color-scheme: dark; }
+dialog.counter .chip[aria-pressed="true"] { background: var(--on-dark); color: var(--sumi); border-color: var(--on-dark); }
+dialog.counter .btn-primary { color: var(--sumi); }
+
+.qr-box { background: #FCFAF4; border-radius: var(--r-md); padding: var(--sp-4); display: grid; place-items: center; justify-self: center; width: min(280px, 100%); }
+.qr-box svg { width: 100%; height: auto; display: block; }
+
+.field { display: grid; gap: var(--sp-2); }
+.field label { font-weight: 700; font-size: .875rem; }
+.field .hint { font-size: .75rem; color: var(--ink-3); }
+.input { min-height: 48px; border: 1px solid var(--line-strong); border-radius: var(--r-sm); background: var(--surface); color: var(--ink); padding: 0 var(--sp-3); font: inherit; width: 100%; }
+.input:focus { outline: 2px solid var(--matcha); outline-offset: 0; border-color: transparent; }
+.prefix { display: flex; }
+.prefix span { display: grid; place-items: center; padding: 0 var(--sp-3); border: 1px solid var(--line-strong); border-right: 0; border-radius: var(--r-sm) 0 0 var(--r-sm); background: var(--washi-deep); font-family: var(--font-mono); font-size: .9rem; }
+.prefix .input { border-radius: 0 var(--r-sm) var(--r-sm) 0; }
+.check { display: flex; gap: var(--sp-3); align-items: flex-start; font-size: .9rem; }
+.check input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--matcha); }
+
+.toast {
+  position: fixed; left: 50%; bottom: calc(var(--tabbar-h) + var(--sp-4) + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 12px);
+  background: var(--sumi); color: var(--on-dark); padding: var(--sp-3) var(--sp-4); border-radius: var(--r-sm);
+  font-size: .9rem; font-weight: 600; max-width: calc(100% - 32px); width: max-content; opacity: 0; pointer-events: none; z-index: 30;
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+.menu-list { display: grid; }
+.menu-item { display: flex; align-items: center; gap: var(--sp-3); width: 100%; min-height: 56px; background: none; border: 0; border-bottom: 1px solid var(--line); text-align: left; cursor: pointer; padding: 0; }
+.menu-item:last-child { border-bottom: 0; }
+.menu-item .t { font-weight: 700; }
+.menu-item .d { font-size: .8rem; color: var(--ink-3); }
+.menu-item svg.i { color: var(--ink-2); flex: none; }
+
+.steps { display: grid; gap: var(--sp-4); counter-reset: s; }
+.steps li { list-style: none; display: grid; grid-template-columns: 32px 1fr; gap: var(--sp-3); }
+.steps li::before { counter-increment: s; content: counter(s); width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--line-strong); display: grid; place-items: center; font-family: var(--font-mono); font-size: .8rem; }
+.steps { padding: 0; margin: 0; }
+
+.reward-choice { display: grid; grid-template-columns: 48px 1fr; gap: var(--sp-3); align-items: start; }
+.reward-choice .seal-mini { width: 48px; height: 48px; }
+.code { font-family: var(--font-mono); font-size: 1.383rem; letter-spacing: .12em; padding: var(--sp-3) var(--sp-4); border: 1px dashed var(--line-strong); border-radius: var(--r-sm); text-align: center; user-select: all; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<div class="strip" id="strip">Prototype preview. Your card is saved on this phone only.</div>
+
+<div class="shell">
+  <header class="topbar">
+    <div class="wordmark">HojichaYa <span class="x">× YAMA Café</span></div>
+    <button class="icon-btn" id="menuBtn" aria-label="More options">
+      <svg class="i" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
+    </button>
+  </header>
+  <main id="app" aria-live="polite"></main>
+</div>
+
+<div class="tabbar">
+  <nav aria-label="Sections">
+    <button class="tab" data-tab="card"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="12" r="2.5"/><path d="M14 10h4M14 14h3"/></svg>Card</button>
+    <button class="tab" data-tab="journal"><svg class="i" viewBox="0 0 24 24"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7M8 11h5"/></svg>Journal</button>
+    <button class="tab" data-tab="find"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg>Find a tea</button>
+    <button class="tab" data-tab="rewards"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M5 12v9h14v-9M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg>Rewards<i class="badge" id="rewardDot" hidden></i></button>
+  </nav>
+</div>
+
+<dialog class="sheet" id="sheet" aria-labelledby="sheetTitle"><div class="grabber"></div><div class="sheet-body" id="sheetBody"></div></dialog>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="teas.js"></script>
+<script>
+(() => {
+"use strict";
+
+// ─── Settings the owner decides ─────────────────────────────────────────────
+const CONFIG = {
+  stampsPerReward: 8,
+  rewards: {
+    // Placeholder values until HojichaYa sets them.
+    yama: "A drink of your choice at YAMA Café",
+    online: "RM 20.00 off your next hojichaya.com order",
+  },
+  cafe: "YAMA Café, Sunway Square Mall, Bandar Sunway",
+  milestones: [
+    { teas: 1, title: "First cup" },
+    { teas: 3, title: "Explorer" },
+    { teas: 6, title: "Roaster" },
+    { teas: 10, title: "Chajin", jp: "茶人", gloss: "a person of tea" },
+  ],
+};
+
+const TEAS = (window.HY_TEAS || []);
+const TEA = Object.fromEntries(TEAS.map(t => [t.id, t]));
+const FAMILIES = [
+  { id: "hojicha", name: "Hojicha", jp: "ほうじ茶" },
+  { id: "matcha", name: "Matcha", jp: "抹茶" },
+  { id: "genmaicha", name: "Genmaicha", jp: "玄米茶" },
+  { id: "sencha", name: "Sencha", jp: "煎茶" },
+  { id: "oolong", name: "Oolong", jp: "烏龍茶" },
+];
+
+// ─── Storage ────────────────────────────────────────────────────────────────
+// LocalStore keeps the prototype on this phone. The live app swaps in an
+// ApiStore with the same load/save shape, backed by the Chaji server.
+const KEY = "hy-passport-v1";
+const LocalStore = {
+  load() { try { return JSON.parse(localStorage.getItem(KEY)); } catch { return null; } },
+  save(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch {} },
+};
+
+const DAY = 86400000;
+function demoState() {
+  const now = Date.now();
+  const at = d => new Date(now - d * DAY).toISOString();
+  return {
+    v: 1, demo: true,
+    member: { name: "Aina", phone: "", no: "HY 4271 1880" },
+    stamps: [
+      { id: "s1", src: "yama", tea: "hojicha-kaori", at: at(26) },
+      { id: "s2", src: "online", tea: "dark-roast", at: at(19), ref: "#HY1043" },
+      { id: "s3", src: "yama", tea: "kimidori-matcha", at: at(12) },
+      { id: "s4", src: "online", tea: "genmaicha", at: at(5), ref: "#HY1088" },
+      { id: "s5", src: "yama", tea: "hojicha-kaori", at: at(1) },
+    ],
+    redeemed: [],
+    lastSeenStamp: "s5",
+  };
+}
+
+let state = LocalStore.load() || demoState();
+const save = () => LocalStore.save(state);
+
+// ─── Derived values ─────────────────────────────────────────────────────────
+const onCard = () => state.stamps.length - state.redeemed.length * CONFIG.stampsPerReward;
+const rewardReady = () => onCard() >= CONFIG.stampsPerReward;
+function triedMap() {
+  const m = {};
+  for (const s of state.stamps) if (s.tea && !m[s.tea]) m[s.tea] = s;
+  return m;
+}
+const lastStamp = () => state.stamps[state.stamps.length - 1] || null;
+
+// Flavour matching (mirrors app/lib/flavour.ts)
+const AXES = ["roast", "umami", "sweetness", "astringency"];
+const W = { roast: 1.5, umami: 1.5, sweetness: 1, astringency: 1 };
+const MAXD = Math.sqrt(AXES.reduce((s, a) => s + W[a] * 100, 0));
+const clamp = (n, lo = 0, hi = 10) => Math.min(hi, Math.max(lo, n));
+const score = (a, b) => Math.round(100 * (1 - Math.sqrt(AXES.reduce((s, k) => s + W[k] * (a[k] - b[k]) ** 2, 0)) / MAXD));
+const fromMap = (r, u) => ({ roast: r, umami: u, sweetness: clamp(3 + r * .5), astringency: clamp(6 - r * .6 + u * .1) });
+function tasteFromHistory() {
+  const now = Date.now(); const t = { roast: 0, umami: 0, sweetness: 0, astringency: 0 }; let w = 0;
+  for (const s of state.stamps) {
+    const tea = TEA[s.tea]; if (!tea) continue;
+    const k = .5 ** ((now - Date.parse(s.at)) / DAY / 60);
+    AXES.forEach(a => t[a] += k * tea[a]); w += k;
+  }
+  if (!w) return null;
+  AXES.forEach(a => t[a] /= w);
+  return t;
+}
+function recommend(target, { exclude = [], filter = () => true, limit = 3 } = {}) {
+  const ex = new Set(exclude);
+  return TEAS.filter(t => !ex.has(t.id) && filter(t))
+    .map(t => ({ tea: t, pct: score(target, t) }))
+    .sort((a, b) => b.pct - a.pct || (b.tea.inStock - a.tea.inStock))
+    .slice(0, limit);
+}
+
+// ─── Small helpers ──────────────────────────────────────────────────────────
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const rm = n => "RM " + n.toFixed(2);
+function when(iso) {
+  const d = new Date(iso), days = Math.floor((new Date().setHours(0,0,0,0) - new Date(d).setHours(0,0,0,0)) / DAY);
+  if (days <= 0) return "Today";
+  if (days === 1) return "Yesterday";
+  return d.toLocaleDateString("en-MY", { day: "numeric", month: "short" });
+}
+function hexMix(a, b, t) {
+  const p = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const [x, y] = [p(a), p(b)];
+  return "#" + x.map((v, i) => Math.round(v + (y[i] - v) * t).toString(16).padStart(2, "0")).join("");
+}
+// Colour of the tea in the cup: green by shading/umami, browner by roast.
+function liquor(t) {
+  const green = hexMix("#B7BD6A", "#4E5B27", t.umami / 10);
+  return t.roast === 0 ? green : hexMix(green, t.roast > 6 ? "#6E3D22" : "#9A5A34", Math.min(1, t.roast / 8));
+}
+function swatch(t, size = "") {
+  const c = liquor(t);
+  return `<div class="swatch ${t.form === "leaf" ? "leaf" : ""}" style="${size}background:linear-gradient(160deg, ${c}, ${hexMix(c, "#2C2E29", .25)})"><img alt="" src="${esc(t.img)}" loading="lazy" onerror="this.remove()"></div>`;
+}
+function seal(src, cls = "seal") {
+  const yama = src === "yama";
+  const color = yama ? "var(--seal-yama)" : "var(--seal-online)";
+  const glyph = yama ? "山" : "茶";
+  return `<svg class="${cls}" viewBox="0 0 64 64" role="img" aria-label="${yama ? "Stamped at YAMA Café" : "Earned on hojichaya.com"}">
+    <circle cx="32" cy="32" r="29" fill="none" stroke="${color}" stroke-width="3"/>
+    <circle cx="32" cy="32" r="24" fill="${color}" opacity=".94"/>
+    <text x="32" y="33" text-anchor="middle" dominant-baseline="central" font-family="Hiragino Mincho ProN, Yu Mincho, Noto Serif JP, serif" font-weight="700" font-size="26" fill="#F6F1E7">${glyph}</text>
+  </svg>`;
+}
+const icon = {
+  qr: '<svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v.01M14 21h3M21 17v4h-1"/></svg>',
+  ext: '<svg class="i" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M7 17 17 7M8 7h9v9"/></svg>',
+  close: '<svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  store: '<svg class="i" viewBox="0 0 24 24"><path d="M3 9l1.5-5h15L21 9M3 9v11h18V9M3 9h18M9 20v-6h6v6"/></svg>',
+  cart: '<svg class="i" viewBox="0 0 24 24"><path d="M3 4h2l2.4 11.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L20 8H6"/><circle cx="9" cy="20" r="1"/><circle cx="17" cy="20" r="1"/></svg>',
+  plus: '<svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
+  reset: '<svg class="i" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg>',
+  info: '<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>',
+  user: '<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+};
+
+let toastTimer;
+function toast(msg) {
+  const el = $("#toast"); el.textContent = msg; el.classList.add("show");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove("show"), 3200);
+}
+
+// ─── Sheet ──────────────────────────────────────────────────────────────────
+const sheet = $("#sheet");
+let wakeLock = null;
+function openSheet(html, { counter = false } = {}) {
+  $("#sheetBody").innerHTML = html;
+  sheet.classList.toggle("counter", counter);
+  if (!sheet.open) sheet.showModal();
+}
+function closeSheet() { if (sheet.open) sheet.close(); }
+let needsRender = false;
+sheet.addEventListener("close", () => {
+  if (wakeLock) { wakeLock.release().catch(() => {}); wakeLock = null; }
+  if (needsRender) { needsRender = false; render(); window.scrollTo({ top: 0 }); }
+});
+function closeAndRender() { needsRender = true; if (sheet.open) closeSheet(); else sheet.dispatchEvent(new Event("close")); }
+sheet.addEventListener("click", e => { if (e.target === sheet) closeSheet(); });
+const sheetHead = (title, eyebrow = "") =>
+  `<div class="sheet-head"><div class="stack" style="gap:4px">${eyebrow ? `<div class="eyebrow">${eyebrow}</div>` : ""}<h2 id="sheetTitle">${title}</h2></div><button class="icon-btn" data-act="close" aria-label="Close">${icon.close}</button></div>`;
+
+// ─── Views ──────────────────────────────────────────────────────────────────
+let tab = "card";
+let journalFilter = "all";
+let mapPos = null; // {r,u}
+let mapPreset = null;
+
+function render() {
+  document.querySelectorAll(".tab").forEach(b => b.setAttribute("aria-current", b.dataset.tab === tab ? "page" : "false"));
+  $("#rewardDot").hidden = !rewardReady();
+  $("#app").innerHTML = ({ card: viewCard, journal: viewJournal, find: viewFind, rewards: viewRewards })[tab]();
+  if (tab === "find") bindMap();
+}
+
+function viewCard() {
+  const n = onCard(), per = CONFIG.stampsPerReward;
+  const current = state.stamps.slice(state.redeemed.length * per);
+  const fresh = state.lastSeenStamp;
+  const slots = Array.from({ length: per }, (_, i) => {
+    const s = current[i];
+    if (!s) return `<div class="seal-slot"><div class="empty">${i + 1}</div></div>`;
+    return `<div class="seal-slot">${seal(s.src, "seal" + (s.id === fresh ? " pop" : ""))}</div>`;
+  }).join("");
+  state.lastSeenStamp = null; save();
+
+  const left = Math.max(0, per - n);
+  const progress = rewardReady()
+    ? `<p><strong>Your reward is ready.</strong> Spend it at YAMA or online.</p><button class="btn btn-primary" data-tab-go="rewards">See my reward</button>`
+    : `<p><strong>${left} more ${left === 1 ? "stamp" : "stamps"}</strong> to your next reward. Earn them at YAMA or on hojichaya.com.</p>`;
+
+  const tried = triedMap();
+  const taste = tasteFromHistory();
+  const next = taste ? recommend(taste, { exclude: Object.keys(tried), limit: 2 }) : [];
+
+  return `<section class="view">
+    <div class="view-head">
+      <div class="eyebrow"><span class="jp">通い帳</span>Your passport</div>
+      <h1>One card for the café and the shop</h1>
+    </div>
+
+    <div class="stack-lg">
+      <article class="passport" aria-label="Stamp card">
+        <div class="passport-top">
+          <div class="passport-brand">HojichaYa × YAMA<small>Tea passport</small></div>
+          <div class="passport-no">${esc(state.member.no)}</div>
+        </div>
+        <div class="passport-name">${esc(state.member.name || "Your card")}</div>
+        <div class="seals" aria-label="${n} of ${per} stamps">${slots}</div>
+        <div class="passport-foot"><span>Stamps this round</span><strong>${Math.min(n, per)} / ${per}</strong></div>
+      </article>
+
+      <div class="legend" aria-label="What the stamps mean">
+        <span>${seal("yama", "seal-mini")}Stamped at YAMA Café</span>
+        <span>${seal("online", "seal-mini")}Earned on hojichaya.com</span>
+      </div>
+
+      <div class="stack">${progress}
+        <button class="btn btn-primary btn-block" data-act="show-card">${icon.qr} Show my card at the counter</button>
+      </div>
+    </div>
+
+    ${bridgeCard()}
+
+    ${next.length ? `<section class="stack">
+      <div class="row between"><h3>Next for your journal</h3><button class="link-btn" data-tab-go="find">Explore</button></div>
+      <div class="panel" style="padding-block:var(--sp-2)">${next.map(m => teaRow(m.tea, `${m.pct}% match`)).join("")}</div>
+      <p class="xs muted">Based on the teas you've had, most recent first.</p>
+    </section>` : ""}
+
+    <section class="stack">
+      <h3>Recent stamps</h3>
+      <div class="panel" style="padding-block:var(--sp-2)">
+        ${state.stamps.length ? state.stamps.slice(-5).reverse().map(s => {
+          const t = TEA[s.tea];
+          const where = s.src === "yama" ? "YAMA Café" : `hojichaya.com order ${s.ref ? esc(s.ref) : ""}`;
+          return `<div class="tea-row" style="cursor:default">${seal(s.src, "seal-mini")}<div class="meta"><span class="name">${where}</span><span class="sub">${t ? esc(t.name) : "Stamp added"}</span></div><span class="xs muted">${when(s.at)}</span></div>`;
+        }).join("") : `<p class="muted small" style="padding:var(--sp-3) 0">No stamps yet. Your first one comes with your next cup at YAMA or your next order online.</p>`}
+      </div>
+    </section>
+
+    <button class="link-btn" data-act="how">How the passport works</button>
+  </section>`;
+}
+
+function bridgeCard() {
+  const s = lastStamp(); if (!s) return "";
+  const t = TEA[s.tea];
+  if (s.src === "yama" && t) {
+    const buy = t.inStock
+      ? `<a class="btn btn-dark" href="${esc(t.url)}" target="_blank" rel="noopener">Take it home · ${rm(t.price)} ${icon.ext}</a>`
+      : `<p class="small muted">${esc(t.name)} is sold out online right now.</p>`;
+    return `<section class="panel panel-tint">
+      <div class="eyebrow">From your last cup</div>
+      <div class="row" style="align-items:flex-start">${swatch(t, "width:56px;height:56px;")}<div class="stack" style="gap:4px"><h3>Your drink at YAMA was made with ${esc(t.name)}</h3><p class="small muted">${esc(t.notes)}. ${t.form === "powder" ? "Whisk the same powder into milk or water at home" : "Brew the same leaves at home"}, ${esc(t.size)}.</p></div></div>
+      ${buy}
+    </section>`;
+  }
+  if (s.src === "yama") {
+    return `<section class="panel panel-matcha">
+      <div class="eyebrow">Thanks for visiting YAMA</div>
+      <h3>Find a tea to take home</h3>
+      <p class="small muted">Tell us what you like and we'll match it to our teas. Every order online adds a stamp to this card.</p>
+      <button class="btn btn-dark" data-tab-go="find">Find a tea</button>
+    </section>`;
+  }
+  return `<section class="panel panel-matcha">
+    <div class="eyebrow">Your next stamp</div>
+    <h3>Taste it at the café</h3>
+    <p class="small muted">Your online order ${s.ref ? esc(s.ref) + " " : ""}added a stamp. Bring your card to ${esc(CONFIG.cafe)} and your next cup adds another to the same card.</p>
+  </section>`;
+}
+
+function teaRow(t, right = "", rank = 0) {
+  return `<button class="tea-row" data-tea="${t.id}">${swatch(t)}<span class="meta"><span class="name">${rank ? `<span class="mono" style="color:var(--matcha)">${rank}</span> ` : ""}${esc(t.name)}</span><span class="sub">${esc(t.notes)}</span></span>${right ? `<span class="pct">${right}</span>` : ""}</button>`;
+}
+
+function viewJournal() {
+  const tried = triedMap();
+  const count = Object.keys(tried).length;
+  const ms = CONFIG.milestones;
+  const reached = ms.filter(m => count >= m.teas).pop();
+  const next = ms.find(m => count < m.teas);
+  const list = TEAS.filter(t => journalFilter === "all" || t.family === journalFilter);
+  const chips = [{ id: "all", name: "All" }, ...FAMILIES].map(f =>
+    `<button class="chip" data-filter="${f.id}" aria-pressed="${journalFilter === f.id}">${f.name}${f.jp ? `<span class="jp">${f.jp}</span>` : ""}</button>`).join("");
+
+  return `<section class="view">
+    <div class="view-head">
+      <div class="eyebrow"><span class="jp">茶帳</span>Tea journal</div>
+      <h1>Every tea you try gets a page</h1>
+      <p class="muted">Cups at YAMA and orders from hojichaya.com both count.</p>
+    </div>
+
+    <div class="panel stack">
+      <div class="row between"><strong>${count} of ${TEAS.length} teas</strong>${reached ? `<span class="small muted">${reached.jp ? `<span class="jp">${reached.jp}</span> ` : ""}${reached.title}</span>` : ""}</div>
+      <div class="bar" aria-hidden="true"><i style="width:${(count / TEAS.length * 100).toFixed(1)}%"></i></div>
+      <p class="small muted">${next ? `Try ${next.teas - count} more to become ${next.jp ? `<span class="jp">${next.jp}</span> ` : ""}${next.title}${next.gloss ? `, ${next.gloss}` : ""}.` : "You've tried every tea we make. Thank you."}</p>
+    </div>
+
+    <div class="chips" role="group" aria-label="Filter by tea">${chips}</div>
+
+    <div class="journal-grid">
+      ${list.map(t => {
+        const s = tried[t.id];
+        return `<button class="jcard ${s ? "" : "untried"}" data-tea="${t.id}">
+          <div style="position:relative">${swatch(t)}${s ? seal(s.src, "seal-on") : ""}</div>
+          <span class="name">${esc(t.name)}</span>
+          <span class="when">${s ? `${s.src === "yama" ? "At YAMA" : "From an order"} · ${when(s.at)}` : "Not tried yet"}</span>
+        </button>`;
+      }).join("")}
+    </div>
+  </section>`;
+}
+
+const PRESETS = [
+  { id: "last", label: "Like my last cup" },
+  { id: "evening", label: "Low caffeine, for evenings" },
+  { id: "latte", label: "For lattes at home" },
+  { id: "new", label: "Something I haven't tried" },
+];
+function presetFilter() {
+  const tried = triedMap();
+  return ({
+    evening: t => t.caffeine === "low",
+    latte: t => t.form === "powder",
+    new: t => !tried[t.id],
+  })[mapPreset] || (() => true);
+}
+
+function viewFind() {
+  if (!mapPos) {
+    const t = tasteFromHistory();
+    mapPos = t ? { r: t.roast, u: t.umami } : { r: 5, u: 5 };
+  }
+  return `<section class="view">
+    <div class="view-head">
+      <div class="eyebrow"><span class="jp">茶選び</span>Find a tea</div>
+      <h1>Move the marker toward what you like</h1>
+      <p class="muted">We'll match it against every tea we make.</p>
+    </div>
+    <div class="chips" role="group" aria-label="Quick picks">
+      ${PRESETS.map(p => `<button class="chip" data-preset="${p.id}" aria-pressed="${mapPreset === p.id}">${p.label}</button>`).join("")}
+    </div>
+    <div class="map-wrap" id="mapWrap"></div>
+    <section class="stack">
+      <h3>Closest matches</h3>
+      <div class="panel" style="padding-block:var(--sp-2)" id="matches"></div>
+      <p class="xs muted">Flavour scores are a first draft from our tasting notes and will be refined.</p>
+    </section>
+  </section>`;
+}
+
+// Tasting map: x = roast (0 left → 10 right), y = umami (10 top → 0 bottom)
+const MAP = { w: 340, h: 300, pad: 34 };
+const mx = r => MAP.pad + (r / 10) * (MAP.w - 2 * MAP.pad);
+const my = u => MAP.h - MAP.pad - (u / 10) * (MAP.h - 2 * MAP.pad);
+function drawMap() {
+  const target = fromMap(mapPos.r, mapPos.u);
+  const matches = recommend(target, { filter: presetFilter(), limit: 3 });
+  const topIds = new Set(matches.map(m => m.tea.id));
+  const gridLines = [0, 2.5, 5, 7.5, 10].map(v =>
+    `<line class="grid" x1="${mx(v)}" y1="${my(0)}" x2="${mx(v)}" y2="${my(10)}"/><line class="grid" x1="${mx(0)}" y1="${my(v)}" x2="${mx(10)}" y2="${my(v)}"/>`).join("");
+  // Nudge overlapping dots apart so each tea is visible.
+  const seen = {};
+  const dots = TEAS.map(t => {
+    const k = t.roast + "," + t.umami; const n = seen[k] = (seen[k] || 0) + 1;
+    const dx = (n - 1) * 9, rank = matches.findIndex(m => m.tea.id === t.id) + 1;
+    return `<circle class="dot ${rank ? "top" : ""}" cx="${mx(t.roast) + dx}" cy="${my(t.umami)}" r="${rank ? 7 : 4.5}"><title>${esc(t.name)}</title></circle>` +
+      (rank ? `<text class="dot-rank" x="${mx(t.roast) + dx}" y="${my(t.umami) + 3}" text-anchor="middle">${rank}</text>` : "");
+  }).join("");
+  $("#mapWrap").innerHTML = `<svg class="map" id="map" viewBox="0 0 ${MAP.w} ${MAP.h}" tabindex="0" role="slider"
+      aria-label="Tasting map. Arrow keys move left for fresh and green, right for roasted, up for richer umami, down for lighter."
+      aria-valuetext="Roast ${mapPos.r.toFixed(1)} of 10, umami ${mapPos.u.toFixed(1)} of 10">
+    ${gridLines}
+    <text class="axis-label" x="${mx(0)}" y="${MAP.h - 10}">Fresh &amp; green</text>
+    <text class="axis-label" x="${mx(10)}" y="${MAP.h - 10}" text-anchor="end">Deeply roasted →</text>
+    <text class="axis-label" x="${mx(0)}" y="20">↑ Rich umami</text>
+    ${dots}
+    <g class="marker" transform="translate(${mx(mapPos.r)} ${my(mapPos.u)})">
+      <circle class="marker-ring" r="13"/><circle class="marker-core" r="6"/>
+    </g>
+  </svg>`;
+  $("#matches").innerHTML = matches.length
+    ? matches.map((m, i) => teaRow(m.tea, `${m.pct}%`, i + 1)).join("")
+    : `<p class="small muted" style="padding:var(--sp-3) 0">Nothing new to suggest here. Clear the quick pick to see every tea.</p>`;
+}
+function bindMap() {
+  drawMap();
+  const wrap = $("#mapWrap");
+  const toPos = e => {
+    const svg = $("#map"), b = svg.getBoundingClientRect();
+    const x = (e.clientX - b.left) / b.width * MAP.w, y = (e.clientY - b.top) / b.height * MAP.h;
+    mapPos = { r: clamp((x - MAP.pad) / (MAP.w - 2 * MAP.pad) * 10), u: clamp((MAP.h - MAP.pad - y) / (MAP.h - 2 * MAP.pad) * 10) };
+    drawMap();
+  };
+  let dragging = false;
+  wrap.onpointerdown = e => { dragging = true; wrap.setPointerCapture(e.pointerId); toPos(e); };
+  wrap.onpointermove = e => { if (dragging) toPos(e); };
+  wrap.onpointerup = wrap.onpointercancel = () => { dragging = false; };
+  wrap.onkeydown = e => {
+    const step = e.shiftKey ? 2 : .5, d = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, step], ArrowDown: [0, -step] }[e.key];
+    if (!d) return; e.preventDefault();
+    mapPos = { r: clamp(mapPos.r + d[0]), u: clamp(mapPos.u + d[1]) }; drawMap(); $("#map").focus();
+  };
+}
+
+function viewRewards() {
+  const per = CONFIG.stampsPerReward, n = onCard();
+  const ready = rewardReady();
+  const history = state.redeemed.slice().reverse();
+  return `<section class="view">
+    <div class="view-head">
+      <div class="eyebrow"><span class="jp">ご褒美</span>Rewards</div>
+      <h1>${ready ? "Your reward is ready" : `${per} stamps, one reward`}</h1>
+      <p class="muted">${ready ? "Choose where to spend it. Both doors take the same card." : "When your card is full, spend the reward at YAMA or online. You decide then."}</p>
+    </div>
+
+    ${ready ? `
+    <div class="stack">
+      <div class="panel reward-choice">${seal("yama", "seal-mini")}<div class="stack" style="gap:var(--sp-2)"><h3>At YAMA Café</h3><p class="small muted">${esc(CONFIG.rewards.yama)}.</p><button class="btn btn-primary" data-act="redeem-yama">Use it at the counter</button></div></div>
+      <div class="panel reward-choice">${seal("online", "seal-mini")}<div class="stack" style="gap:var(--sp-2)"><h3>On hojichaya.com</h3><p class="small muted">${esc(CONFIG.rewards.online)}.</p><button class="btn btn-ghost" data-act="redeem-online">Get my code</button></div></div>
+    </div>` : `
+    <div class="panel stack">
+      <div class="row between"><strong>${n} of ${per} stamps</strong><span class="small muted">${per - n} to go</span></div>
+      <div class="bar"><i style="width:${(n / per * 100).toFixed(1)}%"></i></div>
+      <div class="stack small muted" style="gap:var(--sp-2)">
+        <div class="row">${seal("yama", "seal-mini")}<span>${esc(CONFIG.rewards.yama)}</span></div>
+        <div class="row">${seal("online", "seal-mini")}<span>${esc(CONFIG.rewards.online)}</span></div>
+      </div>
+    </div>`}
+
+    ${history.length ? `<section class="stack"><h3>Used rewards</h3><div class="panel" style="padding-block:var(--sp-2)">
+      ${history.map(r => `<div class="tea-row" style="cursor:default">${seal(r.where, "seal-mini")}<div class="meta"><span class="name">${r.where === "yama" ? "Used at YAMA Café" : "Online code " + esc(r.code)}</span></div><span class="xs muted">${when(r.at)}</span></div>`).join("")}
+    </div></section>` : ""}
+
+    <p class="xs muted">Prototype note: reward values are placeholders for HojichaYa to set.</p>
+  </section>`;
+}
+
+// ─── Sheets ─────────────────────────────────────────────────────────────────
+function sheetTea(id) {
+  const t = TEA[id]; if (!t) return;
+  const s = triedMap()[id];
+  const fam = FAMILIES.find(f => f.id === t.family);
+  const bars = [["Roast", t.roast], ["Umami", t.umami], ["Sweetness", t.sweetness], ["Astringency", t.astringency]]
+    .map(([k, v]) => `<div class="flav"><span>${k}</span><div class="bar"><i style="width:${v * 10}%"></i></div><span class="mono">${v}</span></div>`).join("");
+  openSheet(`${sheetHead(esc(t.name), `<span class="jp">${fam.jp}</span>${fam.name}`)}
+    <div style="position:relative">${swatch(t, "width:100%;aspect-ratio:16/9;max-width:100%;")}${s ? seal(s.src, "seal-on").replace('class="seal-on"', 'class="seal-on" style="width:48px;height:48px;right:10px;bottom:10px"') : ""}</div>
+    <p>${esc(t.notes)}.</p>
+    <div class="stack">${bars}</div>
+    <div class="row small muted"><span>Caffeine: ${t.caffeine}</span><span>·</span><span>${t.form === "powder" ? "Stone-ground powder" : "Loose leaf"}</span></div>
+    ${s ? `<p class="small">${s.src === "yama" ? "You had this at YAMA" : "You ordered this"} ${when(s.at).toLowerCase() === "today" ? "today" : "on " + when(s.at)}.</p>` : ""}
+    ${t.inStock
+      ? `<a class="btn btn-primary btn-block" href="${esc(t.url)}" target="_blank" rel="noopener">${icon.cart} ${esc(t.size)} · ${rm(t.price)} on hojichaya.com</a>`
+      : `<p class="small muted">Sold out online right now.</p>`}
+    <p class="xs muted">Every hojichaya.com order adds a stamp to this card.</p>`);
+}
+
+function sheetShowCard() {
+  let qrSvg = `<p class="mono">${esc(state.member.no)}</p>`;
+  try {
+    const qr = qrcode(0, "M"); qr.addData("HYP:" + state.member.no.replace(/\s/g, "")); qr.make();
+    const n = qr.getModuleCount(), q = 2; let d = "";
+    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.isDark(r, c)) d += `M${c + q} ${r + q}h1v1h-1z`;
+    qrSvg = `<svg viewBox="0 0 ${n + q * 2} ${n + q * 2}" shape-rendering="crispEdges" role="img" aria-label="Card QR code"><rect width="100%" height="100%" fill="#FCFAF4"/><path d="${d}" fill="#2C2E29"/></svg>`;
+  } catch {}
+  openSheet(`${sheetHead("Show this to the barista", "YAMA Café")}
+    <div class="qr-box">${qrSvg}</div>
+    <p class="mono" style="text-align:center;letter-spacing:.12em">${esc(state.member.no)}</p>
+    <p class="small muted" style="text-align:center">They'll scan it and stamp your card. If it won't scan, turn your screen brightness up or read out the number.</p>`);
+  try { navigator.wakeLock?.request("screen").then(l => wakeLock = l).catch(() => {}); } catch {}
+}
+
+function sheetHow() {
+  openSheet(`${sheetHead("How the passport works", "One card, two doors")}
+    <ol class="steps">
+      <li><div><strong>Collect stamps in both places</strong><p class="small muted">Show your card at YAMA Café for each visit, and every order on hojichaya.com adds one automatically when it's placed with the same phone number.</p></div></li>
+      <li><div><strong>Fill your tea journal</strong><p class="small muted">Each tea you drink or buy gets its own page, with its flavour and where you had it. The journal suggests what to try next.</p></div></li>
+      <li><div><strong>Spend the reward where you like</strong><p class="small muted">${CONFIG.stampsPerReward} stamps fill a card. Use the reward at the café counter or as a code at checkout.</p></div></li>
+    </ol>`);
+}
+
+function sheetMenu() {
+  openSheet(`${sheetHead("More")}
+    <div class="menu-list">
+      ${state.demo ? `<button class="menu-item" data-act="join">${icon.user}<span><span class="t">Start my own card</span><br><span class="d">Replaces this demo card</span></span></button>` : ""}
+      <button class="menu-item" data-act="counter">${icon.store}<span><span class="t">YAMA counter mode</span><br><span class="d">For staff. Stamp a card or redeem a reward</span></span></button>
+      <button class="menu-item" data-act="sim-order">${icon.cart}<span><span class="t">Test an online order</span><br><span class="d">Shows how an order adds a stamp</span></span></button>
+      <button class="menu-item" data-act="how">${icon.info}<span><span class="t">How the passport works</span></span></button>
+      <button class="menu-item" data-act="reset">${icon.reset}<span><span class="t">Reset to the demo card</span></span></button>
+    </div>`);
+}
+
+let counterTea = "hojicha-kaori";
+function sheetCounter(msg = "") {
+  const order = [...TEAS].sort((a, b) => (b.form === "powder") - (a.form === "powder"));
+  openSheet(`${sheetHead("Stamp a card", "YAMA counter")}
+    ${msg ? `<div class="panel" role="status" style="background:var(--surface);border-color:var(--matcha)"><strong>${msg}</strong></div>` : ""}
+    <div class="field"><label for="cardNo">Card number</label>
+      <input class="input mono" id="cardNo" value="${esc(state.member.no)}" autocomplete="off">
+      <span class="hint">In the live app this opens the camera to scan the customer's card.</span></div>
+    <div class="field"><label id="teaLbl">What was the drink made with?</label>
+      <div class="chips" role="group" aria-labelledby="teaLbl" style="flex-wrap:wrap">
+        ${order.map(t => `<button class="chip" data-ctea="${t.id}" aria-pressed="${counterTea === t.id}">${esc(t.name)}</button>`).join("")}
+        <button class="chip" data-ctea="" aria-pressed="${counterTea === ""}">Not a tea drink</button>
+      </div>
+      <span class="hint">This is what fills the customer's journal and suggests the tea to take home.</span></div>
+    <button class="btn btn-primary btn-block" data-act="stamp">${icon.plus} Add stamp</button>
+    ${rewardReady() ? `<button class="btn btn-ghost btn-block" data-act="redeem-yama">Redeem reward at the counter</button>` : ""}
+`, { counter: true });
+  sheet.scrollTop = 0;
+}
+
+function sheetSimOrder() {
+  const inStock = TEAS.filter(t => t.inStock);
+  openSheet(`${sheetHead("Test an online order", "hojichaya.com")}
+    <p class="small muted">When an order is placed with the same phone number or email as a card, the stamp is added on its own. Pick a tea to see it happen.</p>
+    <div class="field"><label for="simTea">Tea in the order</label>
+      <select class="input" id="simTea">${inStock.map(t => `<option value="${t.id}">${esc(t.name)} · ${esc(t.size)} · ${rm(t.price)}</option>`).join("")}</select></div>
+    <button class="btn btn-primary btn-block" data-act="sim-place">Place test order</button>`);
+}
+
+function sheetJoin(err = "") {
+  openSheet(`${sheetHead("Start your own card")}
+    <p class="muted">Your stamps from YAMA and hojichaya.com collect in one place. All we need is your phone number.</p>
+    <form id="joinForm" class="stack-lg" novalidate>
+      <div class="field"><label for="joinPhone">Mobile number</label>
+        <div class="prefix"><span>+60</span><input class="input" id="joinPhone" inputmode="tel" autocomplete="tel-national" placeholder="12 345 6789" required></div>
+        <span class="hint">Use the number you check out with online, so orders stamp this card.</span></div>
+      <div class="field"><label for="joinName">First name <span class="muted">(optional)</span></label>
+        <input class="input" id="joinName" autocomplete="given-name"></div>
+      <label class="check"><input type="checkbox" id="joinWa"> <span>WhatsApp me when a reward is ready</span></label>
+      ${err ? `<p class="small" style="color:var(--error)" role="alert">${err}</p>` : ""}
+      <button class="btn btn-primary btn-block" type="submit">Create my card</button>
+      <p class="xs muted">Prototype: the card and the demo stamps it replaces live on this phone only. In the live app we send a one-time code to confirm the number.</p>
+    </form>`);
+}
+
+function sheetRedeemOnline(code) {
+  openSheet(`${sheetHead("Your reward code", "hojichaya.com")}
+    <p class="muted">${esc(CONFIG.rewards.online)}. Enter it at checkout.</p>
+    <div class="code" id="code">${esc(code)}</div>
+    <div class="row"><button class="btn btn-ghost" data-act="copy" style="flex:1">Copy code</button><a class="btn btn-primary" style="flex:1" href="https://hojichaya.com" target="_blank" rel="noopener">Shop now ${icon.ext}</a></div>
+    <p class="xs muted">Prototype: this code is an example and won't work at checkout yet.</p>`);
+}
+
+// ─── Actions ────────────────────────────────────────────────────────────────
+function addStamp(src, tea, ref) {
+  const s = { id: "s" + Date.now().toString(36), src, tea: tea || null, at: new Date().toISOString(), ...(ref ? { ref } : {}) };
+  state.stamps.push(s); state.lastSeenStamp = s.id; save();
+  return s;
+}
+
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-act],[data-tab],[data-tab-go],[data-tea],[data-filter],[data-preset],[data-ctea]");
+  if (!el) return;
+  const d = el.dataset;
+  if (d.tab || d.tabGo) { tab = d.tab || d.tabGo; closeSheet(); render(); window.scrollTo({ top: 0 }); return; }
+  if (d.tea) return sheetTea(d.tea);
+  if (d.filter) { journalFilter = d.filter; render(); return; }
+  if (d.preset) {
+    mapPreset = mapPreset === d.preset ? null : d.preset;
+    if (mapPreset === "last") { const t = TEA[lastStamp()?.tea]; if (t) mapPos = { r: t.roast, u: t.umami }; }
+    if (mapPreset === "latte") mapPos = { r: mapPos.r, u: Math.max(mapPos.u, 5) };
+    render(); return;
+  }
+  if (d.ctea !== undefined) { counterTea = d.ctea; document.querySelectorAll("[data-ctea]").forEach(b => b.setAttribute("aria-pressed", b.dataset.ctea === counterTea)); return; }
+
+  switch (d.act) {
+    case "close": return closeSheet();
+    case "show-card": return sheetShowCard();
+    case "how": return sheetHow();
+    case "counter": return sheetCounter();
+    case "sim-order": return sheetSimOrder();
+    case "join": return sheetJoin();
+    case "reset": state = demoState(); save(); tab = "card"; mapPos = null; closeAndRender(); return toast("Back to the demo card.");
+    case "stamp": {
+      const no = $("#cardNo").value.replace(/\s/g, "");
+      if (no !== state.member.no.replace(/\s/g, "")) return sheetCounter("That card number isn't on this phone. In the prototype, use the number shown.");
+      addStamp("yama", counterTea);
+      const left = CONFIG.stampsPerReward - onCard();
+      const who = state.member.name || "The customer";
+      tab = "card"; needsRender = true;
+      return sheetCounter(left > 0 ? `Stamped. ${esc(who)} has ${onCard()} of ${CONFIG.stampsPerReward}.` : `Stamped. ${esc(who)}'s reward is ready.`);
+    }
+    case "sim-place": {
+      const tea = $("#simTea").value;
+      addStamp("online", tea, "#HY" + (1100 + state.stamps.length));
+      tab = "card"; closeAndRender();
+      return toast("Order matched by phone number. Stamp added.");
+    }
+    case "redeem-yama": {
+      if (!rewardReady()) return;
+      state.redeemed.push({ at: new Date().toISOString(), where: "yama" }); save(); tab = "card"; closeAndRender();
+      return toast("Reward used at YAMA. Your new card starts now.");
+    }
+    case "redeem-online": {
+      if (!rewardReady()) return;
+      const code = "HYP-" + Math.random().toString(36).slice(2, 6).toUpperCase() + "-" + (1000 + state.redeemed.length);
+      state.redeemed.push({ at: new Date().toISOString(), where: "online", code }); save(); render();
+      return sheetRedeemOnline(code);
+    }
+    case "copy": {
+      const txt = $("#code").textContent;
+      navigator.clipboard?.writeText(txt).then(() => toast("Code copied."), () => { getSelection().selectAllChildren($("#code")); toast("Code selected. Copy it from here."); })
+        ?? (getSelection().selectAllChildren($("#code")), toast("Code selected. Copy it from here."));
+      return;
+    }
+  }
+});
+
+document.addEventListener("submit", e => {
+  if (e.target.id !== "joinForm") return;
+  e.preventDefault();
+  // Same rule as normaliseMyMobile in app/lib/passport.ts.
+  const digits = $("#joinPhone").value.replace(/\D/g, "").replace(/^60/, "").replace(/^0/, "");
+  if (!/^1\d{8,9}$/.test(digits)) return sheetJoin("Enter a Malaysian mobile number, like 12 345 6789.");
+  const name = $("#joinName").value.trim().slice(0, 40);
+  // Random card number. Never derived from the phone number, since it is shown and scanned.
+  const r = crypto.getRandomValues(new Uint32Array(2));
+  const no = "HY " + String(r[0] % 10000).padStart(4, "0") + " " + String(r[1] % 10000).padStart(4, "0");
+  state = { v: 1, demo: false, member: { name, phone: "+60" + digits, no, whatsapp: $("#joinWa").checked }, stamps: [], redeemed: [], lastSeenStamp: null };
+  save(); tab = "card"; mapPos = null; closeAndRender();
+  toast("Your card is ready. Show it at YAMA to collect your first stamp.");
+});
+
+$("#menuBtn").addEventListener("click", sheetMenu);
+document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => { tab = b.dataset.tab; render(); window.scrollTo({ top: 0 }); }));
+
+const hash = location.hash.slice(1);
+if (["card", "journal", "find", "rewards"].includes(hash)) tab = hash;
+render();
+
+// Installable on a phone when served over https. Ignored where not allowed.
+try { if ("serviceWorker" in navigator && location.protocol === "https:" && !location.hostname.endsWith("claude.ai")) navigator.serviceWorker.register("sw.js").catch(() => {}); } catch {}
+})();
+</script>

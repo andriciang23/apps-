@@ -1,7 +1,7 @@
 // Stamp rules for the café / event passport. Pure functions; persistence lives
 // in app/models/passport.server.ts.
 
-export type StampKind = "cafe_drink" | "event" | "wheel_purchase";
+export type StampKind = "cafe_drink" | "online_order" | "event";
 
 export interface StampRecord {
   kind: StampKind;
@@ -83,4 +83,37 @@ export function progress(stamps: StampRecord[]): Progress {
 export function newlyReached(before: StampRecord[], added: StampRecord): Milestone[] {
   const was = new Set(progress(before).reached.map((m) => m.key));
   return progress([...before, added]).reached.filter((m) => !was.has(m.key));
+}
+
+// ---------------------------------------------------------------------------
+// Shared card: one stamp card across YAMA Café and hojichaya.com.
+// ---------------------------------------------------------------------------
+
+export type StampSource = "yama" | "online";
+
+/** Stamps needed to fill a card. Owner setting; mirrored in web/index.html CONFIG. */
+export const STAMPS_PER_REWARD = 8;
+
+export interface CardState {
+  onCard: number; // stamps on the current card
+  ready: boolean; // a reward can be spent
+  toNext: number; // stamps still needed
+}
+
+export function cardState(totalStamps: number, rewardsUsed: number, per = STAMPS_PER_REWARD): CardState {
+  const onCard = Math.max(0, totalStamps - rewardsUsed * per);
+  return { onCard, ready: onCard >= per, toNext: Math.max(0, per - onCard) };
+}
+
+/**
+ * Normalise a Malaysian mobile number to E.164 (+601XXXXXXXX) so a card made
+ * at the café matches the phone on a hojichaya.com order. Returns null if it
+ * isn't a Malaysian mobile.
+ */
+export function normaliseMyMobile(input: string | null | undefined): string | null {
+  if (!input) return null;
+  let d = input.replace(/\D/g, "");
+  if (d.startsWith("60")) d = d.slice(2);
+  if (d.startsWith("0")) d = d.slice(1);
+  return /^1\d{8,9}$/.test(d) ? `+60${d}` : null;
 }

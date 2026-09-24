@@ -37,6 +37,53 @@ One app with three surfaces, joined by a single **flavour profile** per customer
 ### Events scrapbook
 - `tea_event` metaobjects hold photos, video, the teas tasted and an attendee stamp code. Each event page ends in a shopping list of the teas tasted.
 
+## Update 2026-09-24 — phone app first, one card for both businesses
+
+The owner asked for the customer experience to live outside Shopify (web or phone) and for YAMA Café and HojichaYa to be joined by one loyalty card. The build now has two parts:
+
+| Part | What it is | Where |
+|---|---|---|
+| **HojichaYa Passport** | Installable phone web app (PWA). Card, tea journal, tea finder, rewards, YAMA counter mode | `web/` — static files, host anywhere (e.g. `passport.hojichaya.com`) |
+| **Chaji server** | This Shopify app. Holds cards and stamps, matches online orders to cards, issues reward codes, runs the HoReCa reorder desk | `app/` |
+
+Shopify stays the shop. The passport is the relationship.
+
+### How the two businesses connect
+
+- **One identity: the mobile number.** Customers join with their Malaysian mobile, which is how they check out online and how YAMA staff already talk to them on WhatsApp. `normaliseMyMobile()` makes `012-345 6789`, `+60 12 345 6789` and `60123456789` the same person.
+- **One card, two kinds of stamp.** 山 (yama, mountain) seals are stamped by YAMA staff at the counter. 茶 (cha, tea) seals come from hojichaya.com orders, added automatically when an `orders/paid` webhook's phone or email matches a card. Both fill the same 8-slot card.
+- **The tea travels with the stamp.** The barista taps which tea the drink was made with. That one tap fills the customer's tea journal and powers "Your drink at YAMA was made with Hojicha Powder Kaori → take it home". The café menu never has to be mapped by hand, and no claim is made that staff didn't enter.
+- **Spend it at either door.** A full card becomes a reward the customer chooses when it's ready: at the YAMA counter (staff redeem in counter mode) or a single-use discount code for hojichaya.com.
+- **Tea journal as the long game.** Distinct teas tried, from either door, unlock recognition titles (First cup, Explorer, Roaster, Chajin 茶人). These are titles only; no perks promised.
+- **Card number is random**, never derived from the phone number, because it is shown on screen and in the QR.
+
+### Intent map — what the person wants at each moment, and how the app answers
+
+| Moment | Their intent | Design response |
+|---|---|---|
+| At a YAMA table, first time | "Is this worth my time?" | Demo card opens in a working state; joining is one field (mobile) and one button. No password, no email. |
+| At the counter, paying | "Quick, there's a queue" | Card tab has one primary button: *Show my card at the counter*. Full-screen QR, screen kept awake, number shown for read-out. |
+| Barista, busy | "Stamp and move on" | Counter mode: card number, one tap for the tea, *Add stamp*. Confirmation appears at the top where they're looking. |
+| After a café visit | "I liked that. What was it?" | The card leads with *From your last cup*: the exact tea, its notes, price and a direct link to that product. |
+| After an online order | "Did it count?" | Stamp appears on the same card; the card then invites them to the café for the next one. |
+| Browsing at home | "What should I buy?" | *Find a tea*: drag toward roasted or green, rich or light. Quick picks match real reasons (evenings, lattes, something new). Three ranked matches, each one tap from buying. |
+| Returning | "How close am I?" | Progress sentence under the card: *3 more stamps to your next reward*. Rewards tab dot when one is ready. |
+| Reward ready | "Where can I use it?" | Two clear choices, café or online, decided at the moment of spending, not at sign-up. |
+
+### Copy principles applied
+
+- HojichaYa voice: calm, warm, we/you, British-Malaysian spelling (flavour), `RM 45.00` format, no emoji.
+- Japanese terms as quiet accents with meaning nearby: 通い帳 (a regular's passbook) on the card, 茶帳 on the journal, family names in kana/kanji on filters.
+- Every button says what happens: *Show my card at the counter*, *Add stamp*, *Take it home · RM 45.00*, *Get my code*.
+- Honesty: sold-out teas say so instead of offering a larger size; flavour scores are labelled a first draft; reward values and the prototype's local storage are labelled as placeholders.
+
+### Still needed for launch
+
+1. Owner decisions: stamps per card (8 proposed), the YAMA reward, the online reward value, whether a stamp needs a minimum spend.
+2. Server endpoints: `POST /api/join` (WhatsApp/SMS one-time code), `GET /api/card`, `POST /api/stamp` (staff PIN), `POST /api/redeem`, `orders/paid` webhook → stamp, reward codes via `discountCodeBasicCreate`.
+3. Counter mode on a café tablet with camera scanning (`BarcodeDetector`).
+4. Hosting for `web/` and the PDPA consent wording for storing mobile numbers.
+
 ## Why this and not…
 
 - **A 3D café render:** too heavy for about 1,800 mostly-mobile sessions a month, and it doesn't fix the real leak, which is choosing a tea. A 2.5D illustrated map can come later if passport data shows people use location features.
