@@ -84,6 +84,26 @@ Shopify stays the shop. The passport is the relationship.
 3. Counter mode on a café tablet with camera scanning (`BarcodeDetector`).
 4. Hosting for `web/` and the PDPA consent wording for storing mobile numbers.
 
+## Update 2026-09-24 (later) — YAMA visual identity
+
+The owner preferred YAMA's look to the HojichaYa web palette, so the passport now follows the café. Sources, from the owner's Google Drive: the wall mural artwork, the eight process illustrations it's built from (`YAMA Wall Design`), the wall font files, the tea-field reference photo, and the pre-opening shopfront photos. The finished shop photos (`YAMA Shop Photos`, 10–23 MB each) were over the Drive connector's download limit and weren't reviewed.
+
+| Element | From | Used as |
+|---|---|---|
+| `#DCDEA0` pistachio | Mural background | Page ground |
+| `#F0F0C0` cream strokes | Mural doodle lines | Tiled hand-drawn background |
+| `#FFFFFA` | Mural circles, plaster wall | Cards, stamp discs, tea cups |
+| `#304810` olive | Illustration linework | Text, primary buttons |
+| `#60A040` leaf | Illustration leaf fill | Online (茶) stamps, highlights |
+| `#8C5838` brown | Mural path | YAMA (山) stamps, progress, reward CTA |
+| Layered ridges with warm glow | Shopfront plaster relief with backlight | Card header |
+| Walnut | Shopfront shelving | Staff counter mode background |
+| Kozuka Gothic Pr6N (licensed) | Wall font folder | Noto Sans JP, its open-source counterpart by the same designer |
+
+**The card is the mural.** Eight stamps, eight steps, in the mural's order: Harvest 摘採, Steam 蒸熱, Roll 粗揉, Twist 揉捻, Shape 精揉, Dry 乾燥, Sort 選別, Roast 焙煎. The brown path winds through the steps; each stamp fills the next illustration and carries a 山 or 茶 badge for where it was earned. The eighth stamp roasts the leaf and unlocks the reward. Customers who stand in front of the wall see the same journey on their phone.
+
+Illustrations live in `web/art/` (280px, 10–18 KB each). **Owner to confirm** the illustrator's licence covers use in the app.
+
 ## Why this and not…
 
 - **A 3D café render:** too heavy for about 1,800 mostly-mobile sessions a month, and it doesn't fix the real leak, which is choosing a tea. A 2.5D illustrated map can come later if passport data shows people use location features.

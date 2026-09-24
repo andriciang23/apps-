@@ -1,12 +1,12 @@
 {
-  "name": "HojichaYa Passport",
+  "name": "YAMA | HojichaYa Passport",
   "short_name": "Passport",
   "description": "One stamp card for YAMA Café and hojichaya.com.",
   "start_url": "./#card",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#F6F1E7",
-  "theme_color": "#F6F1E7",
+  "background_color": "#DCDEA0",
+  "theme_color": "#DCDEA0",
   "icons": [
     { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
   ]

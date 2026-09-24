@@ -1,6 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" fill="#2C2E29"/>
-  <circle cx="256" cy="256" r="150" fill="none" stroke="#9A5A34" stroke-width="16"/>
-  <circle cx="256" cy="256" r="124" fill="#9A5A34"/>
-  <text x="256" y="262" text-anchor="middle" dominant-baseline="central" font-family="Hiragino Mincho ProN, Yu Mincho, Noto Serif JP, serif" font-weight="700" font-size="136" fill="#F6F1E7">茶</text>
+  <rect width="512" height="512" fill="#DCDEA0"/>
+  <g fill="none" stroke="#F0F0C0" stroke-width="10" stroke-linecap="round">
+    <path d="M40 70q30-12 60 0t60 0"/><path d="M360 90h90"/><path d="M50 440h110"/><path d="M340 450q30-12 60 0t60 0"/>
+  </g>
+  <circle cx="256" cy="256" r="170" fill="#FFFFFA"/>
+  <path d="M130 300C160 240 190 232 214 268C240 200 282 186 318 250C340 222 364 232 384 268" fill="none" stroke="#304810" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M150 330C230 316 300 318 364 330" fill="none" stroke="#8C5838" stroke-width="10" stroke-linecap="round"/>
 </svg>

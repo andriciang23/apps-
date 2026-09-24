@@ -1,309 +1,288 @@
 <title>HojichaYa Passport</title>
-<meta name="theme-color" content="#F6F1E7">
+<meta name="theme-color" content="#DCDEA0">
 <meta name="description" content="One stamp card for YAMA Café and hojichaya.com.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Mulish:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&family=Noto+Serif+JP:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
 <style>
-/* HojichaYa design tokens (design-reference/colors_and_type.css). Components use var() only. */
+/* YAMA palette, sampled from the café's wall mural (background, circles,
+   linework, path) and shopfront (plaster ridges, warm backlight, walnut). */
 :root {
-  --sumi: #2C2E29; --sumi-soft: #3C3E38;
-  --matcha: #6F8038; --matcha-deep: #4E5B27; --matcha-bright: #8FA24C; --matcha-tint: #E7EAD7;
-  --hojicha: #9A5A34; --hojicha-deep: #6E3D22; --hojicha-tint: #EFE0D2;
-  --sencha: #A9B25C; --gold: #C99A3F;
-  --washi: #F6F1E7; --washi-deep: #EDE6D6; --surface: #FCFAF4;
-  --line: #E0D8C7; --line-strong: #CFC5AE;
-  --ink: #2C2E29; --ink-2: #595B50; --ink-3: #8A8B7E; --on-dark: #F6F1E7;
+  --ground: #DCDEA0;        /* mural pistachio */
+  --ground-deep: #CDD08A;
+  --doodle: #F0F0C0;        /* cream hand-drawn lines on the mural */
+  --paper: #FFFFFA;         /* mural circles, plaster */
+  --paper-2: #F5F5E2;
+  --ink: #304810;           /* illustration linework */
+  --ink-2: #4E6330;
+  --ink-3: #6F7D52;
+  --leaf: #60A040;          /* fresh leaf fill */
+  --leaf-tint: #D8E8D0;
+  --path: #8C5838;          /* mural path, roasted brown */
+  --path-tint: #EEDFCB;
+  --glow: #F6E3B4;          /* shopfront backlight */
+  --walnut: #5B3A24;
+  --line: rgba(48, 72, 16, .16);
+  --line-strong: rgba(48, 72, 16, .3);
+  --on-ink: #FFFFFA;
   --error: #B23A2E;
-  --card-bg: #2C2E29; --card-ink: #F6F1E7; --card-ink-2: #CFC8B6; --card-line: #4A4C44;
-  --seal-yama: #9A5A34; --seal-online: #6F8038;
-  --scrim: rgba(34,35,30,.42);
-  --header-bg: rgba(246,241,231,.85);
-  --shadow-sm: 0 1px 2px rgba(44,46,41,.06);
-  --shadow-md: 0 6px 18px -8px rgba(44,46,41,.22);
+  --scrim: rgba(28, 36, 18, .45);
+  --bar-bg: rgba(220, 222, 160, .88);
+  --shadow: 0 1px 0 rgba(48,72,16,.06), 0 10px 24px -14px rgba(48,72,16,.35);
+  --doodles: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360' fill='none' stroke='%23F0F0C0' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M20 40q20-8 40 0t40 0'/%3E%3Cpath d='M200 30h60'/%3E%3Cpath d='M90 110q30-10 60 0'/%3E%3Cpath d='M262 150q20-6 40 0t40 0'/%3E%3Cpath d='M30 222h70'/%3E%3Cpath d='M170 250q25-8 50 0t50 0'/%3E%3Cpath d='M60 322q20-6 40 0'/%3E%3Cpath d='M240 320h80'/%3E%3Cpath d='M120 190q6-14 18-6q8-12 20 0q10-4 12 6'/%3E%3Cpath d='M300 80q5-12 15-5q7-10 17 0'/%3E%3C/svg%3E");
 
-  --font-display: "Comfortaa", "Mulish", system-ui, sans-serif;
-  --font-body: "Mulish", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: "Spline Sans Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-  --font-jp: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+  --font: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
 
-  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
-  --r-xs: 3px; --r-sm: 6px; --r-md: 10px; --r-lg: 16px; --r-pill: 999px;
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 24px; --sp-6: 32px; --sp-7: 48px;
+  --r-sm: 10px; --r-md: 16px; --r-lg: 24px; --r-pill: 999px;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1); --dur: 240ms;
   --tabbar-h: 64px;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --washi: #2C2E29; --washi-deep: #25271F; --surface: #34362F;
-    --line: #45473F; --line-strong: #56584E;
-    --ink: #F6F1E7; --ink-2: #CFC8B6; --ink-3: #9C9A8A;
-    --matcha: #8FA24C; --matcha-deep: #A9B25C; --matcha-tint: #3A4128;
-    --hojicha: #C0804F; --hojicha-tint: #4A3526;
-    --card-bg: #1F201C; --card-line: #3E4038;
-    --seal-yama: #C0804F; --seal-online: #8FA24C;
-    --header-bg: rgba(44,46,41,.85);
-    --scrim: rgba(10,10,8,.6);
+    --ground: #1D2513; --ground-deep: #161D0E; --doodle: #2A3419;
+    --paper: #27311A; --paper-2: #2F3A20;
+    --ink: #EEF0CC; --ink-2: #CBD1A8; --ink-3: #9AA37B;
+    --leaf: #8CC76A; --leaf-tint: #2F4222; --path: #C98C5E; --path-tint: #3D2E20;
+    --line: rgba(238, 240, 204, .14); --line-strong: rgba(238, 240, 204, .28);
+    --on-ink: #1D2513; --scrim: rgba(8, 10, 5, .6); --bar-bg: rgba(29, 37, 19, .9);
+    --shadow: 0 10px 24px -14px rgba(0,0,0,.6);
+    --doodles: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360' fill='none' stroke='%232A3419' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M20 40q20-8 40 0t40 0'/%3E%3Cpath d='M200 30h60'/%3E%3Cpath d='M90 110q30-10 60 0'/%3E%3Cpath d='M262 150q20-6 40 0t40 0'/%3E%3Cpath d='M30 222h70'/%3E%3Cpath d='M170 250q25-8 50 0t50 0'/%3E%3Cpath d='M60 322q20-6 40 0'/%3E%3Cpath d='M240 320h80'/%3E%3Cpath d='M120 190q6-14 18-6q8-12 20 0q10-4 12 6'/%3E%3Cpath d='M300 80q5-12 15-5q7-10 17 0'/%3E%3C/svg%3E");
   }
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --washi: #2C2E29; --washi-deep: #25271F; --surface: #34362F;
-  --line: #45473F; --line-strong: #56584E;
-  --ink: #F6F1E7; --ink-2: #CFC8B6; --ink-3: #9C9A8A;
-  --matcha: #8FA24C; --matcha-deep: #A9B25C; --matcha-tint: #3A4128;
-  --hojicha: #C0804F; --hojicha-tint: #4A3526;
-  --card-bg: #1F201C; --card-line: #3E4038;
-  --seal-yama: #C0804F; --seal-online: #8FA24C;
-  --header-bg: rgba(44,46,41,.85);
-  --scrim: rgba(10,10,8,.6);
+  --ground: #1D2513; --ground-deep: #161D0E; --doodle: #2A3419;
+  --paper: #27311A; --paper-2: #2F3A20;
+  --ink: #EEF0CC; --ink-2: #CBD1A8; --ink-3: #9AA37B;
+  --leaf: #8CC76A; --leaf-tint: #2F4222; --path: #C98C5E; --path-tint: #3D2E20;
+  --line: rgba(238, 240, 204, .14); --line-strong: rgba(238, 240, 204, .28);
+  --on-ink: #1D2513; --scrim: rgba(8, 10, 5, .6); --bar-bg: rgba(29, 37, 19, .9);
+  --shadow: 0 10px 24px -14px rgba(0,0,0,.6);
+  --doodles: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360' fill='none' stroke='%232A3419' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M20 40q20-8 40 0t40 0'/%3E%3Cpath d='M200 30h60'/%3E%3Cpath d='M90 110q30-10 60 0'/%3E%3Cpath d='M262 150q20-6 40 0t40 0'/%3E%3Cpath d='M30 222h70'/%3E%3Cpath d='M170 250q25-8 50 0t50 0'/%3E%3Cpath d='M60 322q20-6 40 0'/%3E%3Cpath d='M240 320h80'/%3E%3Cpath d='M120 190q6-14 18-6q8-12 20 0q10-4 12 6'/%3E%3Cpath d='M300 80q5-12 15-5q7-10 17 0'/%3E%3C/svg%3E");
 }
 
 html, body { height: 100%; }
 body {
-  background: var(--washi); color: var(--ink);
-  font: 400 1rem/1.65 var(--font-body);
+  background-color: var(--ground); color: var(--ink);
+  font: 400 1rem/1.7 var(--font);
   -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+}
+/* Hand-drawn cream strokes, like the mural behind the counter. */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: var(--doodles) 0 0 / 360px 360px repeat;
 }
 * { box-sizing: border-box; }
-::selection { background: var(--matcha-tint); }
-:focus-visible { outline: 2px solid var(--matcha); outline-offset: 2px; }
+::selection { background: var(--leaf-tint); }
+:focus-visible { outline: 2px solid var(--leaf); outline-offset: 2px; }
 button { font: inherit; color: inherit; }
-a { color: var(--matcha); }
-h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.12; text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
-h1 { font-size: 1.728rem; }
-h2 { font-size: 1.383rem; }
-h3 { font-size: 1.125rem; line-height: 1.3; }
+a { color: var(--ink); }
+h1, h2, h3 { font-weight: 700; line-height: 1.25; text-wrap: balance; margin: 0; letter-spacing: .01em; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.3rem; }
+h3 { font-size: 1.06rem; line-height: 1.4; }
 p { margin: 0; text-wrap: pretty; }
-.eyebrow { font-size: .75rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-3); }
-.eyebrow .jp { font-family: var(--font-jp); letter-spacing: .08em; text-transform: none; font-weight: 500; margin-right: .4em; }
+.eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: var(--ink-3); }
+.eyebrow .jp { letter-spacing: .12em; margin-right: .5em; font-weight: 500; }
 .muted { color: var(--ink-2); }
 .small { font-size: .875rem; }
 .xs { font-size: .75rem; }
-.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
-.jp { font-family: var(--font-jp); }
+.mono { font-family: var(--font-mono); }
 
 /* Shell */
-.strip {
-  background: var(--hojicha-deep); color: var(--on-dark); text-align: center;
-  font-size: .75rem; letter-spacing: .04em; padding: 6px var(--sp-4);
-}
+.strip { background: var(--ink); color: var(--on-ink); text-align: center; font-size: .75rem; letter-spacing: .04em; padding: 6px var(--sp-4); }
 .shell { max-width: 480px; margin: 0 auto; padding-inline: var(--sp-4); padding-block: 0 calc(var(--tabbar-h) + var(--sp-6) + env(safe-area-inset-bottom, 0px)); }
 .topbar {
   position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
   display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3);
   padding: var(--sp-3) 0; margin-bottom: var(--sp-2);
-  background: var(--header-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  background: var(--bar-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
 }
-.wordmark { display: flex; align-items: baseline; gap: var(--sp-2); font-family: var(--font-display); font-weight: 700; font-size: 1.125rem; letter-spacing: -.01em; }
-.wordmark .x { color: var(--ink-3); font-weight: 500; font-size: .875rem; }
+.wordmark { display: flex; align-items: center; gap: var(--sp-3); color: var(--ink); }
+.wordmark svg { width: 44px; height: 20px; }
+.wordmark .yama { font-weight: 700; letter-spacing: .28em; font-size: 1.05rem; }
+.wordmark .sep { width: 1px; height: 18px; background: var(--ink); opacity: .5; }
+.wordmark .hy { font-weight: 500; font-size: .9rem; letter-spacing: .04em; }
 .icon-btn {
-  width: 44px; height: 44px; display: grid; place-items: center;
-  border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--surface); cursor: pointer;
+  width: 44px; height: 44px; display: grid; place-items: center; flex: none;
+  border: 0; border-radius: 50%; background: var(--paper); cursor: pointer; box-shadow: var(--shadow);
   transition: background 140ms var(--ease);
 }
-.icon-btn:hover { background: var(--washi-deep); }
-svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.icon-btn:hover { background: var(--paper-2); }
+svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 
 .view { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-6); animation: enter var(--dur) var(--ease); }
 .view-head { display: grid; gap: var(--sp-2); padding-top: var(--sp-2); }
 @keyframes enter { from { opacity: .4; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
-/* Buttons */
+/* Buttons: ink-filled like the linework, pill-shaped like the mural circles */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2);
-  min-height: 48px; padding: 0 var(--sp-5); border-radius: var(--r-sm);
-  border: 1px solid transparent; font-weight: 700; font-size: .95rem; text-decoration: none; cursor: pointer;
-  transition: background 140ms var(--ease), border-color 140ms var(--ease), opacity 140ms var(--ease);
+  min-height: 50px; padding: 0 var(--sp-5); border-radius: var(--r-pill);
+  border: 1.5px solid transparent; font-weight: 700; font-size: .95rem; letter-spacing: .02em; text-decoration: none; cursor: pointer;
+  transition: background 140ms var(--ease), opacity 140ms var(--ease), transform 140ms var(--ease);
 }
-.btn:active { opacity: .92; }
-.btn-primary { background: var(--matcha); color: var(--on-dark); }
-.btn-primary:hover { background: var(--matcha-deep); }
-:root[data-theme="dark"] .btn-primary, :root[data-theme="dark"] .btn-primary:hover { color: var(--sumi); }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn-primary { color: var(--sumi); } }
-.btn-ghost { background: transparent; border-color: var(--line-strong); color: var(--ink); }
-.btn-ghost:hover { background: var(--washi-deep); }
-.btn-dark { background: var(--sumi); color: var(--on-dark); }
+.btn:active { opacity: .92; transform: translateY(1px); }
+.btn-primary { background: var(--ink); color: var(--on-ink); }
+.btn-primary:hover { background: var(--ink-2); }
+.btn-ghost { background: var(--paper); border-color: var(--ink); color: var(--ink); }
+.btn-ghost:hover { background: var(--paper-2); }
+.btn-dark { background: var(--path); color: #FFFFFA; }
+.btn-dark:hover { background: var(--walnut); }
 .btn-block { width: 100%; }
 .btn[disabled] { opacity: .45; cursor: not-allowed; }
-.link-btn { background: none; border: 0; padding: var(--sp-2) 0; color: var(--matcha); font-weight: 700; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: transparent; transition: text-decoration-color 140ms var(--ease); }
+.link-btn { background: none; border: 0; padding: var(--sp-2) 0; color: var(--ink); font-weight: 700; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px; text-decoration-color: var(--line-strong); justify-self: start; }
 .link-btn:hover { text-decoration-color: currentColor; }
 
-/* Passport card */
-.passport {
-  position: relative; overflow: hidden;
-  background: var(--card-bg); color: var(--card-ink);
-  border-radius: var(--r-lg); padding: var(--sp-5);
-  display: grid; gap: var(--sp-5);
-  box-shadow: var(--shadow-md);
-}
-.passport::after {
-  content: "通い帳"; position: absolute; right: -6px; bottom: -22px;
-  font-family: var(--font-jp); font-size: 5.5rem; line-height: 1; letter-spacing: -.04em;
-  color: var(--card-ink); opacity: .05; pointer-events: none; writing-mode: horizontal-tb;
-}
-.passport-top { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--sp-3); }
-.passport-brand { font-family: var(--font-display); font-weight: 700; font-size: .95rem; }
-.passport-brand small { display: block; font-family: var(--font-body); font-weight: 500; font-size: .75rem; color: var(--card-ink-2); letter-spacing: .04em; }
-.passport-no { white-space: nowrap; font-family: var(--font-mono); font-size: .8rem; color: var(--card-ink-2); letter-spacing: .06em; text-align: right; }
-.passport-name { font-family: var(--font-display); font-size: 1.383rem; font-weight: 600; }
-.seals { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-3); }
-.seal-slot { aspect-ratio: 1; max-width: 100%; display: grid; place-items: center; }
-.seal-slot .empty { width: 88%; aspect-ratio: 1; border-radius: 50%; border: 1.5px dashed var(--card-line); display: grid; place-items: center; color: var(--card-ink-2); font-family: var(--font-mono); font-size: .75rem; opacity: .8; }
-.passport-foot { display: flex; justify-content: space-between; align-items: baseline; gap: var(--sp-3); font-size: .875rem; color: var(--card-ink-2); }
-.passport-foot strong { color: var(--card-ink); font-family: var(--font-mono); font-weight: 500; font-size: 1rem; }
+/* Passport: plaster ridges on top, the mural journey below */
+.passport { background: var(--paper); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow); min-width: 0; }
+.ridge { position: relative; height: 124px; background: var(--paper-2); overflow: hidden; }
+.ridge svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ridge .r { fill: var(--paper); filter: drop-shadow(0 -3px 6px var(--glow)); }
+.ridge-text { position: absolute; inset: var(--sp-4) var(--sp-5) auto; display: flex; justify-content: space-between; align-items: flex-start; gap: var(--sp-3); z-index: 1; }
+.ridge-text .name { font-size: 1.25rem; font-weight: 700; }
+.ridge-text .sub { white-space: nowrap; font-size: .75rem; color: var(--ink-3); letter-spacing: .08em; }
+.ridge-text .no { font-family: var(--font-mono); font-size: .8rem; color: var(--ink-2); letter-spacing: .08em; white-space: nowrap; }
+.journey { padding: var(--sp-2) var(--sp-3) var(--sp-4); }
+.journey svg { width: 100%; height: auto; display: block; overflow: visible; }
+.journey .trail { fill: none; stroke: var(--path); stroke-width: 5; stroke-linecap: round; }
+.journey .trail-todo { fill: none; stroke: var(--path); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 2 9; opacity: .5; }
+.journey .disc { fill: var(--paper); stroke: var(--line-strong); stroke-width: 1.5; }
+.journey .disc.done { stroke: var(--ink); stroke-width: 2; }
+.journey .disc.next { stroke: var(--leaf); stroke-width: 2.5; stroke-dasharray: 5 5; animation: turn 12s linear infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes turn { to { transform: rotate(360deg); } }
+.journey image.todo { opacity: .22; filter: grayscale(1); }
+.journey .step-label { fill: var(--ink-3); font: 500 10.5px var(--font); text-anchor: middle; letter-spacing: .04em; }
+.journey .step-label.done { fill: var(--ink); font-weight: 700; }
+.journey .badge-ring { fill: var(--paper); }
+.journey .pop { animation: stamp 520ms var(--ease); transform-box: fill-box; transform-origin: center; }
+@keyframes stamp { 0% { transform: scale(1.5) rotate(-12deg); opacity: 0; } 60% { opacity: 1; } 100% { transform: none; } }
+.passport-foot { display: flex; justify-content: space-between; align-items: baseline; gap: var(--sp-3); padding: var(--sp-3) var(--sp-5) var(--sp-4); border-top: 1.5px dashed var(--line); font-size: .875rem; color: var(--ink-2); }
+.passport-foot strong { color: var(--ink); font-size: 1.05rem; }
 
-/* Hanko seal */
-.seal { width: 88%; aspect-ratio: 1; display: block; }
-.seal.pop { animation: stamp 480ms var(--ease); }
-@keyframes stamp { 0% { transform: scale(1.35) rotate(-10deg); opacity: 0; } 60% { opacity: 1; } 100% { transform: scale(1) rotate(-4deg); } }
 .seal-mini { width: 28px; height: 28px; flex: none; }
-
 .legend { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-5); font-size: .875rem; color: var(--ink-2); }
 .legend span { display: inline-flex; align-items: center; gap: var(--sp-2); }
 
 .stack { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-3); }
 .stack-lg { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-5); }
-.passport, .panel { min-width: 0; }
 .row { display: flex; align-items: center; gap: var(--sp-3); }
 .between { justify-content: space-between; }
 
-/* Panels */
-.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); padding: var(--sp-5); display: grid; gap: var(--sp-3); }
-.panel-tint { background: var(--hojicha-tint); border-color: transparent; }
-.panel-matcha { background: var(--matcha-tint); border-color: transparent; }
+.panel { background: var(--paper); border-radius: var(--r-md); padding: var(--sp-5); display: grid; gap: var(--sp-3); box-shadow: var(--shadow); min-width: 0; }
+.panel-tint { background: var(--path-tint); box-shadow: none; }
+.panel-matcha { background: var(--leaf-tint); box-shadow: none; }
+.panel .art { width: 88px; height: 88px; flex: none; object-fit: contain; }
 
-/* Tea rows / cards */
-.swatch { border-radius: var(--r-sm); position: relative; overflow: hidden; flex: none; }
-.swatch::after { content: ""; position: absolute; inset: 0; background: radial-gradient(120% 90% at 30% 20%, rgba(255,255,255,.28), transparent 60%); }
-.swatch.leaf::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(115deg, rgba(0,0,0,.07) 0 2px, transparent 2px 7px); }
+/* Tea "cups": the brew seen from above, in a white cup like the mural circles */
+.swatch { border-radius: 50%; position: relative; overflow: hidden; flex: none; box-shadow: 0 0 0 4px var(--paper), 0 0 0 5.5px var(--line-strong); }
+.swatch::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(60% 50% at 35% 30%, rgba(255,255,255,.35), transparent 70%); }
+.swatch.leaf::before { content: ""; position: absolute; inset: 0; background: repeating-radial-gradient(circle at 60% 65%, rgba(0,0,0,.06) 0 2px, transparent 2px 6px); }
 .swatch img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.tea-row { display: flex; align-items: center; gap: var(--sp-3); padding: var(--sp-3) 0; border-bottom: 1px solid var(--line); background: none; border-left: 0; border-right: 0; border-top: 0; width: 100%; text-align: left; cursor: pointer; }
+.tea-row { display: flex; align-items: center; gap: var(--sp-4); padding: var(--sp-3) 0; border: 0; border-bottom: 1.5px dashed var(--line); background: none; width: 100%; text-align: left; cursor: pointer; }
 .tea-row:last-child { border-bottom: 0; }
-.tea-row .swatch { width: 52px; height: 52px; }
+.tea-row .swatch { width: 46px; height: 46px; margin: 6px; }
 .tea-row .meta { flex: 1; min-width: 0; display: grid; gap: 2px; }
 .tea-row .name { font-weight: 700; }
-.tea-row .sub { font-size: .875rem; color: var(--ink-2); }
-.pct { font-family: var(--font-mono); font-size: .875rem; color: var(--matcha); white-space: nowrap; }
+.tea-row .sub { font-size: .85rem; color: var(--ink-2); }
+.pct { font-size: .875rem; font-weight: 700; color: var(--ink); background: var(--leaf-tint); border-radius: var(--r-pill); padding: 2px 10px; white-space: nowrap; }
 
-.chips { display: flex; gap: var(--sp-2); overflow-x: auto; padding-bottom: var(--sp-1); scrollbar-width: none; }
+.chips { display: flex; gap: var(--sp-2); overflow-x: auto; padding: 2px 2px var(--sp-1); scrollbar-width: none; }
 .chips::-webkit-scrollbar { display: none; }
 .chip {
   flex: none; min-height: 40px; padding: 0 var(--sp-4); border-radius: var(--r-pill);
-  border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-2);
-  font-size: .875rem; font-weight: 600; cursor: pointer; white-space: nowrap;
-  transition: background 140ms var(--ease), color 140ms var(--ease), border-color 140ms var(--ease);
+  border: 1.5px solid var(--ink); background: transparent; color: var(--ink);
+  font-size: .85rem; font-weight: 500; cursor: pointer; white-space: nowrap;
+  transition: background 140ms var(--ease), color 140ms var(--ease);
 }
-.chip .jp { margin-left: .35em; font-weight: 500; opacity: .8; }
-.chip[aria-pressed="true"] { background: var(--sumi); color: var(--on-dark); border-color: var(--sumi); }
-:root[data-theme="dark"] .chip[aria-pressed="true"] { background: var(--on-dark); color: var(--sumi); border-color: var(--on-dark); }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .chip[aria-pressed="true"] { background: var(--on-dark); color: var(--sumi); border-color: var(--on-dark); } }
+.chip .jp { margin-left: .4em; opacity: .75; }
+.chip:hover { background: var(--paper); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); }
 
 .journal-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-3); }
-.jcard {
-  display: grid; gap: var(--sp-2); padding: var(--sp-3); text-align: left;
-  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); cursor: pointer;
-  transition: border-color 140ms var(--ease);
-}
-.jcard:hover { border-color: var(--line-strong); }
-.jcard .swatch { width: 100%; aspect-ratio: 4 / 3; max-width: 100%; }
-.jcard.untried .swatch { filter: saturate(.25); opacity: .55; }
-.jcard .name { font-family: var(--font-display); font-weight: 600; font-size: .95rem; line-height: 1.3; }
-.jcard .when { font-size: .75rem; color: var(--ink-3); }
-.jcard .seal-on { position: absolute; right: 6px; bottom: 6px; width: 34px; height: 34px; z-index: 1; }
+.jcard { position: relative; display: grid; justify-items: center; gap: var(--sp-2); padding: var(--sp-4) var(--sp-3); text-align: center; background: var(--paper); border: 0; border-radius: var(--r-md); cursor: pointer; box-shadow: var(--shadow); transition: transform 140ms var(--ease); }
+.jcard:hover { transform: translateY(-2px); }
+.jcard .swatch { width: 84px; height: 84px; margin: 6px; }
+.jcard.untried .swatch { filter: saturate(.2); opacity: .5; }
+.jcard .name { font-weight: 700; font-size: .92rem; line-height: 1.35; }
+.jcard .when { font-size: .72rem; color: var(--ink-3); }
+.jcard .seal-on { position: absolute; right: 10px; top: 10px; width: 30px; height: 30px; }
 
-.bar { height: 6px; border-radius: var(--r-pill); background: var(--washi-deep); overflow: hidden; }
-.bar > i { display: block; height: 100%; background: var(--matcha); border-radius: inherit; transition: width 480ms var(--ease); }
-
-/* Flavour bars in sheet */
-.flav { display: grid; grid-template-columns: 7.5rem 1fr 1.5rem; align-items: center; gap: var(--sp-3); font-size: .875rem; }
-.flav .bar > i { background: var(--hojicha); }
+.bar { height: 8px; border-radius: var(--r-pill); background: var(--ground-deep); overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--path); border-radius: inherit; transition: width 480ms var(--ease); }
+.flav { display: grid; grid-template-columns: 7rem 1fr 1.5rem; align-items: center; gap: var(--sp-3); font-size: .875rem; }
+.flav .bar > i { background: var(--leaf); }
 .flav .mono { text-align: right; color: var(--ink-2); }
 
 /* Tasting map */
-.map-wrap { position: relative; }
-.map { width: 100%; height: auto; display: block; touch-action: none; user-select: none; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); }
-.map .grid { stroke: var(--line); stroke-width: 1; }
-.map .axis-label { fill: var(--ink-3); font: 600 10px var(--font-body); letter-spacing: .12em; text-transform: uppercase; }
-.map .dot { fill: var(--ink-3); opacity: .55; }
-.map .dot.top { fill: var(--matcha); opacity: 1; }
-.map .dot-rank { fill: var(--on-dark); font: 700 9px var(--font-mono); pointer-events: none; }
-.map .marker-ring { fill: var(--surface); stroke: var(--sumi); stroke-width: 2; }
-:root[data-theme="dark"] .map .marker-ring { stroke: var(--on-dark); }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .map .marker-ring { stroke: var(--on-dark); } }
-.map .marker-core { fill: var(--hojicha); }
+.map { width: 100%; height: auto; display: block; touch-action: none; user-select: none; background: var(--paper); border-radius: var(--r-md); box-shadow: var(--shadow); }
+.map .grid { stroke: var(--line); stroke-width: 1; stroke-dasharray: 2 5; }
+.map .axis-label { fill: var(--ink-3); font: 700 9.5px var(--font); letter-spacing: .14em; text-transform: uppercase; }
+.map .dot { fill: var(--ink-3); opacity: .45; }
+.map .dot.top { fill: var(--ink); opacity: 1; }
+.map .dot-rank { fill: var(--on-ink); font: 700 9px var(--font); pointer-events: none; }
+.map .marker-ring { fill: var(--paper); stroke: var(--path); stroke-width: 3; }
+.map .marker-core { fill: var(--path); }
 .map .marker { cursor: grab; }
-.map:focus-visible { outline: 2px solid var(--matcha); outline-offset: 2px; }
+.map:focus-visible { outline: 2px solid var(--leaf); outline-offset: 2px; }
 
 /* Tab bar */
-.tabbar {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
-  background: var(--header-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  border-top: 1px solid var(--line);
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
+.tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; background: var(--bar-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1.5px solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0px); }
 .tabbar nav { max-width: 480px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); height: var(--tabbar-h); }
-.tab { display: grid; place-items: center; align-content: center; gap: 2px; background: none; border: 0; cursor: pointer; color: var(--ink-3); font-size: .7rem; font-weight: 700; letter-spacing: .04em; transition: color 140ms var(--ease); position: relative; }
+.tab { display: grid; place-items: center; align-content: center; gap: 2px; background: none; border: 0; cursor: pointer; color: var(--ink-3); font-size: .7rem; font-weight: 700; letter-spacing: .04em; position: relative; transition: color 140ms var(--ease); }
 .tab[aria-current="page"] { color: var(--ink); }
-.tab[aria-current="page"]::before { content: ""; position: absolute; top: 0; left: 30%; right: 30%; height: 2px; background: var(--matcha); }
-.tab .badge { position: absolute; top: 10px; left: calc(50% + 8px); width: 8px; height: 8px; border-radius: 50%; background: var(--gold); }
+.tab[aria-current="page"] svg.i { stroke-width: 2.1; }
+.tab[aria-current="page"]::before { content: ""; position: absolute; top: 6px; width: 38px; height: 30px; border-radius: var(--r-pill); background: var(--paper); z-index: -1; }
+.tab .badge { position: absolute; top: 8px; left: calc(50% + 10px); width: 9px; height: 9px; border-radius: 50%; background: var(--path); }
 
 /* Sheets */
-dialog.sheet {
-  width: min(480px, 100%); max-width: 100%; max-height: 92%; margin: auto auto 0; padding: 0;
-  border: 0; border-radius: var(--r-lg) var(--r-lg) 0 0; background: var(--washi); color: var(--ink);
-  box-shadow: var(--shadow-md);
-}
+dialog.sheet { width: min(480px, 100%); max-width: 100%; max-height: 92%; margin: auto auto 0; padding: 0; border: 0; border-radius: var(--r-lg) var(--r-lg) 0 0; background: var(--ground); color: var(--ink); box-shadow: var(--shadow); }
 dialog.sheet[open] { animation: rise var(--dur) var(--ease); }
 dialog.sheet::backdrop { background: var(--scrim); backdrop-filter: blur(2px); }
 @keyframes rise { from { transform: translateY(24px); opacity: .6; } to { transform: none; opacity: 1; } }
-.sheet-body { padding: var(--sp-5) var(--sp-4) calc(var(--sp-6) + env(safe-area-inset-bottom, 0px)); display: grid; gap: var(--sp-5); }
+.sheet-body { padding: var(--sp-5) var(--sp-4) calc(var(--sp-6) + env(safe-area-inset-bottom, 0px)); display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-5); }
 .sheet-head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--sp-3); }
 .grabber { width: 40px; height: 4px; border-radius: 2px; background: var(--line-strong); margin: var(--sp-2) auto 0; }
+/* Counter mode runs on the walnut of the YAMA counter */
+dialog.counter { --ground: #3A2718; --paper: #4A3321; --paper-2: #553B27; --ink: #FFF6E6; --ink-2: #E9D6BC; --ink-3: #C2A887; --line: rgba(255,246,230,.16); --line-strong: rgba(255,246,230,.32); --on-ink: #3A2718; --leaf: #A6D07F; --leaf-tint: #4F5A2C; color-scheme: dark; }
 
-dialog.counter { --washi: #2C2E29; --washi-deep: #25271F; --surface: #34362F; --line: #45473F; --line-strong: #56584E; --ink: #F6F1E7; --ink-2: #CFC8B6; --ink-3: #9C9A8A; --matcha: #8FA24C; --matcha-deep: #A9B25C; color-scheme: dark; }
-dialog.counter .chip[aria-pressed="true"] { background: var(--on-dark); color: var(--sumi); border-color: var(--on-dark); }
-dialog.counter .btn-primary { color: var(--sumi); }
-
-.qr-box { background: #FCFAF4; border-radius: var(--r-md); padding: var(--sp-4); display: grid; place-items: center; justify-self: center; width: min(280px, 100%); }
+.qr-box { background: #FFFFFA; border-radius: var(--r-md); padding: var(--sp-4); display: grid; place-items: center; justify-self: center; width: min(280px, 100%); box-shadow: var(--shadow); }
 .qr-box svg { width: 100%; height: auto; display: block; }
 
 .field { display: grid; gap: var(--sp-2); }
 .field label { font-weight: 700; font-size: .875rem; }
 .field .hint { font-size: .75rem; color: var(--ink-3); }
-.input { min-height: 48px; border: 1px solid var(--line-strong); border-radius: var(--r-sm); background: var(--surface); color: var(--ink); padding: 0 var(--sp-3); font: inherit; width: 100%; }
-.input:focus { outline: 2px solid var(--matcha); outline-offset: 0; border-color: transparent; }
+.input { min-height: 50px; border: 1.5px solid var(--line-strong); border-radius: var(--r-sm); background: var(--paper); color: var(--ink); padding: 0 var(--sp-3); font: inherit; width: 100%; }
+.input:focus { outline: 2px solid var(--leaf); outline-offset: 0; border-color: transparent; }
 .prefix { display: flex; }
-.prefix span { display: grid; place-items: center; padding: 0 var(--sp-3); border: 1px solid var(--line-strong); border-right: 0; border-radius: var(--r-sm) 0 0 var(--r-sm); background: var(--washi-deep); font-family: var(--font-mono); font-size: .9rem; }
+.prefix span { display: grid; place-items: center; padding: 0 var(--sp-3); border: 1.5px solid var(--line-strong); border-right: 0; border-radius: var(--r-sm) 0 0 var(--r-sm); background: var(--paper-2); font-weight: 700; }
 .prefix .input { border-radius: 0 var(--r-sm) var(--r-sm) 0; }
 .check { display: flex; gap: var(--sp-3); align-items: flex-start; font-size: .9rem; }
-.check input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--matcha); }
+.check input { width: 20px; height: 20px; margin-top: 4px; accent-color: var(--ink); }
 
-.toast {
-  position: fixed; left: 50%; bottom: calc(var(--tabbar-h) + var(--sp-4) + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 12px);
-  background: var(--sumi); color: var(--on-dark); padding: var(--sp-3) var(--sp-4); border-radius: var(--r-sm);
-  font-size: .9rem; font-weight: 600; max-width: calc(100% - 32px); width: max-content; opacity: 0; pointer-events: none; z-index: 30;
-  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
-}
+.toast { position: fixed; left: 50%; bottom: calc(var(--tabbar-h) + var(--sp-4) + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 12px); background: var(--ink); color: var(--on-ink); padding: var(--sp-3) var(--sp-5); border-radius: var(--r-pill); font-size: .9rem; font-weight: 700; max-width: calc(100% - 32px); width: max-content; opacity: 0; pointer-events: none; z-index: 30; transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease); }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-.menu-list { display: grid; }
-.menu-item { display: flex; align-items: center; gap: var(--sp-3); width: 100%; min-height: 56px; background: none; border: 0; border-bottom: 1px solid var(--line); text-align: left; cursor: pointer; padding: 0; }
+.menu-list { display: grid; background: var(--paper); border-radius: var(--r-md); padding: 0 var(--sp-4); box-shadow: var(--shadow); }
+.menu-item { display: flex; align-items: center; gap: var(--sp-3); width: 100%; min-height: 60px; background: none; border: 0; border-bottom: 1.5px dashed var(--line); text-align: left; cursor: pointer; padding: 0; }
 .menu-item:last-child { border-bottom: 0; }
 .menu-item .t { font-weight: 700; }
 .menu-item .d { font-size: .8rem; color: var(--ink-3); }
 .menu-item svg.i { color: var(--ink-2); flex: none; }
 
-.steps { display: grid; gap: var(--sp-4); counter-reset: s; }
-.steps li { list-style: none; display: grid; grid-template-columns: 32px 1fr; gap: var(--sp-3); }
-.steps li::before { counter-increment: s; content: counter(s); width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--line-strong); display: grid; place-items: center; font-family: var(--font-mono); font-size: .8rem; }
-.steps { padding: 0; margin: 0; }
+.steps { display: grid; gap: var(--sp-4); padding: 0; margin: 0; }
+.steps li { list-style: none; display: grid; grid-template-columns: 64px 1fr; gap: var(--sp-4); align-items: center; }
+.steps img { width: 64px; height: 64px; object-fit: contain; }
 
 .reward-choice { display: grid; grid-template-columns: 48px 1fr; gap: var(--sp-3); align-items: start; }
 .reward-choice .seal-mini { width: 48px; height: 48px; }
-.code { font-family: var(--font-mono); font-size: 1.383rem; letter-spacing: .12em; padding: var(--sp-3) var(--sp-4); border: 1px dashed var(--line-strong); border-radius: var(--r-sm); text-align: center; user-select: all; }
+.code { font-family: var(--font-mono); font-size: 1.3rem; letter-spacing: .12em; padding: var(--sp-3) var(--sp-4); border: 1.5px dashed var(--ink); border-radius: var(--r-sm); text-align: center; user-select: all; background: var(--paper); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -314,7 +293,7 @@ dialog.counter .btn-primary { color: var(--sumi); }
 
 <div class="shell">
   <header class="topbar">
-    <div class="wordmark">HojichaYa <span class="x">× YAMA Café</span></div>
+    <div class="wordmark" aria-label="YAMA by HojichaYa"><svg viewBox="0 0 44 20" aria-hidden="true"><path d="M2 17C7 8 11 7 15 12C19 3 25 1 31 10C35 5 39 7 42 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="yama">YAMA</span><span class="sep"></span><span class="hy">HojichaYa</span></div>
     <button class="icon-btn" id="menuBtn" aria-label="More options">
       <svg class="i" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
     </button>
@@ -460,12 +439,12 @@ function swatch(t, size = "") {
 }
 function seal(src, cls = "seal") {
   const yama = src === "yama";
-  const color = yama ? "var(--seal-yama)" : "var(--seal-online)";
+  const color = yama ? "var(--path)" : "var(--leaf)";
   const glyph = yama ? "山" : "茶";
   return `<svg class="${cls}" viewBox="0 0 64 64" role="img" aria-label="${yama ? "Stamped at YAMA Café" : "Earned on hojichaya.com"}">
     <circle cx="32" cy="32" r="29" fill="none" stroke="${color}" stroke-width="3"/>
     <circle cx="32" cy="32" r="24" fill="${color}" opacity=".94"/>
-    <text x="32" y="33" text-anchor="middle" dominant-baseline="central" font-family="Hiragino Mincho ProN, Yu Mincho, Noto Serif JP, serif" font-weight="700" font-size="26" fill="#F6F1E7">${glyph}</text>
+    <text x="32" y="33" text-anchor="middle" dominant-baseline="central" font-family="Noto Sans JP, Hiragino Kaku Gothic ProN, sans-serif" font-weight="700" font-size="24" fill="#FFFFFA">${glyph}</text>
   </svg>`;
 }
 const icon = {
@@ -518,41 +497,73 @@ function render() {
   if (tab === "find") bindMap();
 }
 
+// The eight steps on the YAMA wall mural, field to cup. One stamp lights one step.
+const STEPS = [
+  ["harvest", "Harvest", "摘採"], ["steam", "Steam", "蒸熱"], ["roll", "Roll", "粗揉"], ["twist", "Twist", "揉捻"],
+  ["shape", "Shape", "精揉"], ["dry", "Dry", "乾燥"], ["sort", "Sort", "選別"], ["roast", "Roast", "焙煎"],
+];
+const art = i => `art/${i + 1}-${STEPS[i][0]}.png`;
+const POS = [[50, 62], [150, 62], [250, 62], [350, 62], [350, 196], [250, 196], [150, 196], [50, 196]];
+const SEG = [
+  "M50 62C100 40 100 84 150 62", "M150 62C200 40 200 84 250 62", "M250 62C300 40 300 84 350 62",
+  "M350 62C400 62 400 196 350 196", "M350 196C300 218 300 174 250 196", "M250 196C200 218 200 174 150 196",
+  "M150 196C100 218 100 174 50 196",
+];
+
+function journeySvg(current, fresh) {
+  const n = current.length;
+  const trail = SEG.map((d, i) => `<path class="${i + 1 < n ? "trail" : "trail-todo"}" d="${d}"/>`).join("");
+  const steps = POS.map(([x, y], i) => {
+    const s = current[i], done = !!s, next = i === n;
+    const badge = done ? `<g transform="translate(${x + 29} ${y - 29})"><circle class="badge-ring" r="14"/><circle r="11.5" fill="${s.src === "yama" ? "var(--path)" : "var(--leaf)"}"/><text y="0.5" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700" fill="#FFFFFA">${s.src === "yama" ? "山" : "茶"}</text></g>` : "";
+    return `<g class="${done && s.id === fresh ? "pop" : ""}">
+      <circle class="disc ${done ? "done" : ""} ${next ? "next" : ""}" cx="${x}" cy="${y}" r="40"/>
+      <image class="${done ? "" : "todo"}" href="${art(i)}" x="${x - 33}" y="${y - 33}" width="66" height="66"/>
+      ${badge}
+      <text class="step-label ${done ? "done" : ""}" x="${x}" y="${y + 56}">${STEPS[i][1]}</text>
+    </g>`;
+  }).join("");
+  const label = n >= STEPS.length ? "All eight steps done" : `Next: ${STEPS[n][1]} ${STEPS[n][2]}`;
+  return `<svg viewBox="0 0 400 262" role="img" aria-label="${n} of 8 stamps. ${label}.">${trail}${steps}</svg>`;
+}
+
 function viewCard() {
   const n = onCard(), per = CONFIG.stampsPerReward;
-  const current = state.stamps.slice(state.redeemed.length * per);
+  const current = state.stamps.slice(state.redeemed.length * per).slice(0, per);
   const fresh = state.lastSeenStamp;
-  const slots = Array.from({ length: per }, (_, i) => {
-    const s = current[i];
-    if (!s) return `<div class="seal-slot"><div class="empty">${i + 1}</div></div>`;
-    return `<div class="seal-slot">${seal(s.src, "seal" + (s.id === fresh ? " pop" : ""))}</div>`;
-  }).join("");
   state.lastSeenStamp = null; save();
 
   const left = Math.max(0, per - n);
   const progress = rewardReady()
-    ? `<p><strong>Your reward is ready.</strong> Spend it at YAMA or online.</p><button class="btn btn-primary" data-tab-go="rewards">See my reward</button>`
-    : `<p><strong>${left} more ${left === 1 ? "stamp" : "stamps"}</strong> to your next reward. Earn them at YAMA or on hojichaya.com.</p>`;
+    ? `<p><strong>Your leaf has been roasted.</strong> The reward is yours. Spend it at YAMA or online.</p><button class="btn btn-dark" data-tab-go="rewards">See my reward</button>`
+    : `<p><strong>${left} more ${left === 1 ? "stamp" : "stamps"}</strong> to reach the cup. Earn them at YAMA or on hojichaya.com.</p>`;
 
   const tried = triedMap();
   const taste = tasteFromHistory();
   const next = taste ? recommend(taste, { exclude: Object.keys(tried), limit: 2 }) : [];
+  const stepNow = Math.min(n, per);
 
   return `<section class="view">
     <div class="view-head">
       <div class="eyebrow"><span class="jp">通い帳</span>Your passport</div>
-      <h1>One card for the café and the shop</h1>
+      <h1>From field to cup, one stamp at a time</h1>
     </div>
 
     <div class="stack-lg">
       <article class="passport" aria-label="Stamp card">
-        <div class="passport-top">
-          <div class="passport-brand">HojichaYa × YAMA<small>Tea passport</small></div>
-          <div class="passport-no">${esc(state.member.no)}</div>
+        <div class="ridge">
+          <svg viewBox="0 0 400 124" preserveAspectRatio="none" aria-hidden="true">
+            <path class="r" d="M0 124V88C60 80 96 64 146 70S214 56 264 60S344 80 400 72V124Z"/>
+            <path class="r" d="M0 124V102C70 96 112 86 172 90S262 82 322 86S384 96 400 94V124Z"/>
+            <path class="r" d="M0 124V114C80 111 150 107 220 110S340 107 400 110V124Z"/>
+          </svg>
+          <div class="ridge-text">
+            <div><div class="name">${esc(state.member.name || "Your card")}</div><div class="sub">Tea passport</div></div>
+            <div class="no">${esc(state.member.no)}</div>
+          </div>
         </div>
-        <div class="passport-name">${esc(state.member.name || "Your card")}</div>
-        <div class="seals" aria-label="${n} of ${per} stamps">${slots}</div>
-        <div class="passport-foot"><span>Stamps this round</span><strong>${Math.min(n, per)} / ${per}</strong></div>
+        <div class="journey">${journeySvg(current, fresh)}</div>
+        <div class="passport-foot"><span>${stepNow >= per ? "Roasted and ready" : `Step ${stepNow + 1}: ${STEPS[stepNow][1]} <span lang="ja">${STEPS[stepNow][2]}</span>`}</span><strong>${stepNow} / ${per}</strong></div>
       </article>
 
       <div class="legend" aria-label="What the stamps mean">
@@ -603,6 +614,7 @@ function bridgeCard() {
   }
   if (s.src === "yama") {
     return `<section class="panel panel-matcha">
+      <img class="art" src="art/1-harvest.png" alt="">
       <div class="eyebrow">Thanks for visiting YAMA</div>
       <h3>Find a tea to take home</h3>
       <p class="small muted">Tell us what you like and we'll match it to our teas. Every order online adds a stamp to this card.</p>
@@ -610,14 +622,15 @@ function bridgeCard() {
     </section>`;
   }
   return `<section class="panel panel-matcha">
+    <div class="row" style="align-items:flex-start"><img class="art" src="art/2-steam.png" alt=""><div class="stack" style="gap:4px">
     <div class="eyebrow">Your next stamp</div>
     <h3>Taste it at the café</h3>
-    <p class="small muted">Your online order ${s.ref ? esc(s.ref) + " " : ""}added a stamp. Bring your card to ${esc(CONFIG.cafe)} and your next cup adds another to the same card.</p>
+    <p class="small muted">Your online order ${s.ref ? esc(s.ref) + " " : ""}added a stamp. Bring your card to ${esc(CONFIG.cafe)} and your next cup adds another to the same card.</p></div></div>
   </section>`;
 }
 
 function teaRow(t, right = "", rank = 0) {
-  return `<button class="tea-row" data-tea="${t.id}">${swatch(t)}<span class="meta"><span class="name">${rank ? `<span class="mono" style="color:var(--matcha)">${rank}</span> ` : ""}${esc(t.name)}</span><span class="sub">${esc(t.notes)}</span></span>${right ? `<span class="pct">${right}</span>` : ""}</button>`;
+  return `<button class="tea-row" data-tea="${t.id}">${swatch(t)}<span class="meta"><span class="name">${rank ? `<span style="color:var(--path)">${rank}.</span> ` : ""}${esc(t.name)}</span><span class="sub">${esc(t.notes)}</span></span>${right ? `<span class="pct">${right}</span>` : ""}</button>`;
 }
 
 function viewJournal() {
@@ -757,7 +770,7 @@ function viewRewards() {
   return `<section class="view">
     <div class="view-head">
       <div class="eyebrow"><span class="jp">ご褒美</span>Rewards</div>
-      <h1>${ready ? "Your reward is ready" : `${per} stamps, one reward`}</h1>
+      <h1>${ready ? "Your leaf is roasted" : `${per} stamps, one reward`}</h1>
       <p class="muted">${ready ? "Choose where to spend it. Both doors take the same card." : "When your card is full, spend the reward at YAMA or online. You decide then."}</p>
     </div>
 
@@ -820,9 +833,9 @@ function sheetShowCard() {
 function sheetHow() {
   openSheet(`${sheetHead("How the passport works", "One card, two doors")}
     <ol class="steps">
-      <li><div><strong>Collect stamps in both places</strong><p class="small muted">Show your card at YAMA Café for each visit, and every order on hojichaya.com adds one automatically when it's placed with the same phone number.</p></div></li>
-      <li><div><strong>Fill your tea journal</strong><p class="small muted">Each tea you drink or buy gets its own page, with its flavour and where you had it. The journal suggests what to try next.</p></div></li>
-      <li><div><strong>Spend the reward where you like</strong><p class="small muted">${CONFIG.stampsPerReward} stamps fill a card. Use the reward at the café counter or as a code at checkout.</p></div></li>
+      <li><img src="${art(0)}" alt=""><div><strong>Collect stamps in both places</strong><p class="small muted">Show your card at YAMA Café for each visit. Orders on hojichaya.com add a stamp on their own when you use the same phone number.</p></div></li>
+      <li><img src="${art(3)}" alt=""><div><strong>Follow the leaf</strong><p class="small muted">Each stamp moves your leaf one step along the journey on our café wall, from harvest to roast. Every tea you drink or buy also gets a page in your journal.</p></div></li>
+      <li><img src="${art(7)}" alt=""><div><strong>Roasted means rewarded</strong><p class="small muted">The eighth stamp roasts the leaf. Spend the reward at the café counter or as a code at checkout.</p></div></li>
     </ol>`);
 }
 
@@ -841,7 +854,7 @@ let counterTea = "hojicha-kaori";
 function sheetCounter(msg = "") {
   const order = [...TEAS].sort((a, b) => (b.form === "powder") - (a.form === "powder"));
   openSheet(`${sheetHead("Stamp a card", "YAMA counter")}
-    ${msg ? `<div class="panel" role="status" style="background:var(--surface);border-color:var(--matcha)"><strong>${msg}</strong></div>` : ""}
+    ${msg ? `<div class="panel panel-matcha" role="status"><strong>${msg}</strong></div>` : ""}
     <div class="field"><label for="cardNo">Card number</label>
       <input class="input mono" id="cardNo" value="${esc(state.member.no)}" autocomplete="off">
       <span class="hint">In the live app this opens the camera to scan the customer's card.</span></div>

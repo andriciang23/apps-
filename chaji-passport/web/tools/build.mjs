@@ -23,5 +23,5 @@ ${body}</body>
 </html>
 `,
 );
-for (const f of ["teas.js", "manifest.webmanifest", "icon.svg", "sw.js"]) cpSync(join(web, f), join(dist, f));
+for (const f of ["teas.js", "manifest.webmanifest", "icon.svg", "sw.js", "art"]) cpSync(join(web, f), join(dist, f), { recursive: true });
 console.log("web/dist ready");
