@@ -1,39 +1,40 @@
 <title>HojichaYa Passport</title>
-<meta name="theme-color" content="#DCDEA0">
+<meta name="theme-color" content="#F3EEE2">
 <meta name="description" content="One stamp card for YAMA Café and hojichaya.com.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600&display=swap">
 <style>
 /* YAMA palette, sampled from the café's wall mural (background, circles,
    linework, path) and shopfront (plaster ridges, warm backlight, walnut). */
 :root {
-  --ground: #DCDEA0;        /* mural pistachio */
-  --ground-deep: #CDD08A;
-  --doodle: #F0F0C0;        /* cream hand-drawn lines on the mural */
-  --paper: #FFFFFA;         /* mural circles, plaster */
-  --paper-2: #F5F5E2;
-  --ink: #304810;           /* illustration linework */
-  --ink-2: #4E6330;
-  --ink-3: #6F7D52;
-  --leaf: #60A040;          /* fresh leaf fill */
-  --leaf-tint: #D8E8D0;
-  --path: #8C5838;          /* mural path, roasted brown */
-  --path-tint: #EEDFCB;
-  --glow: #F6E3B4;          /* shopfront backlight */
-  --walnut: #5B3A24;
-  --line: rgba(48, 72, 16, .16);
-  --line-strong: rgba(48, 72, 16, .3);
-  --on-ink: #FFFFFA;
+  --ground: #F3EEE2;        /* lit plaster wall */
+  --ground-deep: #E6DECB;
+  --paper: #FFFCF5;         /* backlit ridges, mural circles */
+  --paper-2: #F7F1E4;
+  --ink: #262621;           /* signage lettering */
+  --ink-2: #55503F;
+  --ink-3: #8A8170;
+  --apron: #2D3A33;         /* barista apron, primary actions */
+  --leaf: #4F7F2C;          /* matcha in the cup */
+  --leaf-tint: #E3EAD2;
+  --path: #7A4526;          /* mural labels and path, deep walnut */
+  --path-tint: #F0E3D3;
+  --glow: #F1D39B;          /* LED behind the ridges and shelves */
+  --walnut: #7F5835;        /* shelving */
+  --oak: #C98B43;           /* chairs */
+  --line: rgba(38, 38, 33, .12);
+  --line-strong: rgba(38, 38, 33, .26);
+  --on-ink: #FFFCF5;
   --error: #B23A2E;
-  --scrim: rgba(28, 36, 18, .45);
-  --bar-bg: rgba(220, 222, 160, .88);
-  --shadow: 0 1px 0 rgba(48,72,16,.06), 0 10px 24px -14px rgba(48,72,16,.35);
-  --doodles: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360' fill='none' stroke='%23F0F0C0' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M20 40q20-8 40 0t40 0'/%3E%3Cpath d='M200 30h60'/%3E%3Cpath d='M90 110q30-10 60 0'/%3E%3Cpath d='M262 150q20-6 40 0t40 0'/%3E%3Cpath d='M30 222h70'/%3E%3Cpath d='M170 250q25-8 50 0t50 0'/%3E%3Cpath d='M60 322q20-6 40 0'/%3E%3Cpath d='M240 320h80'/%3E%3Cpath d='M120 190q6-14 18-6q8-12 20 0q10-4 12 6'/%3E%3Cpath d='M300 80q5-12 15-5q7-10 17 0'/%3E%3C/svg%3E");
-
+  --scrim: rgba(30, 24, 18, .45);
+  --bar-bg: rgba(243, 238, 226, .9);
+  --shadow: 0 1px 0 rgba(60,45,25,.05), 0 12px 26px -16px rgba(80,55,25,.4);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.42 0 0 0 0 0.36 0 0 0 0 0.26 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)'/%3E%3C/svg%3E");
   --font: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+  --font-label: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
 
   --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 24px; --sp-6: 32px; --sp-7: 48px;
@@ -44,26 +45,28 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
-    --ground: #1D2513; --ground-deep: #161D0E; --doodle: #2A3419;
-    --paper: #27311A; --paper-2: #2F3A20;
-    --ink: #EEF0CC; --ink-2: #CBD1A8; --ink-3: #9AA37B;
-    --leaf: #8CC76A; --leaf-tint: #2F4222; --path: #C98C5E; --path-tint: #3D2E20;
-    --line: rgba(238, 240, 204, .14); --line-strong: rgba(238, 240, 204, .28);
-    --on-ink: #1D2513; --scrim: rgba(8, 10, 5, .6); --bar-bg: rgba(29, 37, 19, .9);
-    --shadow: 0 10px 24px -14px rgba(0,0,0,.6);
-    --doodles: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360' fill='none' stroke='%232A3419' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M20 40q20-8 40 0t40 0'/%3E%3Cpath d='M200 30h60'/%3E%3Cpath d='M90 110q30-10 60 0'/%3E%3Cpath d='M262 150q20-6 40 0t40 0'/%3E%3Cpath d='M30 222h70'/%3E%3Cpath d='M170 250q25-8 50 0t50 0'/%3E%3Cpath d='M60 322q20-6 40 0'/%3E%3Cpath d='M240 320h80'/%3E%3Cpath d='M120 190q6-14 18-6q8-12 20 0q10-4 12 6'/%3E%3Cpath d='M300 80q5-12 15-5q7-10 17 0'/%3E%3C/svg%3E");
+    --ground: #1E1914; --ground-deep: #17130F;
+    --paper: #29221B; --paper-2: #322920;
+    --ink: #F4EDE0; --ink-2: #D2C7B4; --ink-3: #9D917E;
+    --apron: #EDE3D0; --leaf: #93C066; --leaf-tint: #2E3620; --path: #D0925F; --path-tint: #3A2A1D;
+    --glow: #E7B56A; --walnut: #A87545; --oak: #D59A55;
+    --line: rgba(244, 237, 224, .12); --line-strong: rgba(244, 237, 224, .26);
+    --on-ink: #1E1914; --scrim: rgba(8, 6, 4, .6); --bar-bg: rgba(30, 25, 20, .9);
+    --shadow: 0 12px 26px -16px rgba(0,0,0,.7);
+    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 0.9 0 0 0 0 0.75 0 0 0 0.035 0'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --ground: #1D2513; --ground-deep: #161D0E; --doodle: #2A3419;
-  --paper: #27311A; --paper-2: #2F3A20;
-  --ink: #EEF0CC; --ink-2: #CBD1A8; --ink-3: #9AA37B;
-  --leaf: #8CC76A; --leaf-tint: #2F4222; --path: #C98C5E; --path-tint: #3D2E20;
-  --line: rgba(238, 240, 204, .14); --line-strong: rgba(238, 240, 204, .28);
-  --on-ink: #1D2513; --scrim: rgba(8, 10, 5, .6); --bar-bg: rgba(29, 37, 19, .9);
-  --shadow: 0 10px 24px -14px rgba(0,0,0,.6);
-  --doodles: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360' fill='none' stroke='%232A3419' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M20 40q20-8 40 0t40 0'/%3E%3Cpath d='M200 30h60'/%3E%3Cpath d='M90 110q30-10 60 0'/%3E%3Cpath d='M262 150q20-6 40 0t40 0'/%3E%3Cpath d='M30 222h70'/%3E%3Cpath d='M170 250q25-8 50 0t50 0'/%3E%3Cpath d='M60 322q20-6 40 0'/%3E%3Cpath d='M240 320h80'/%3E%3Cpath d='M120 190q6-14 18-6q8-12 20 0q10-4 12 6'/%3E%3Cpath d='M300 80q5-12 15-5q7-10 17 0'/%3E%3C/svg%3E");
+  --ground: #1E1914; --ground-deep: #17130F;
+  --paper: #29221B; --paper-2: #322920;
+  --ink: #F4EDE0; --ink-2: #D2C7B4; --ink-3: #9D917E;
+  --apron: #EDE3D0; --leaf: #93C066; --leaf-tint: #2E3620; --path: #D0925F; --path-tint: #3A2A1D;
+  --glow: #E7B56A; --walnut: #A87545; --oak: #D59A55;
+  --line: rgba(244, 237, 224, .12); --line-strong: rgba(244, 237, 224, .26);
+  --on-ink: #1E1914; --scrim: rgba(8, 6, 4, .6); --bar-bg: rgba(30, 25, 20, .9);
+  --shadow: 0 12px 26px -16px rgba(0,0,0,.7);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 0.9 0 0 0 0 0.75 0 0 0 0.035 0'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 html, body { height: 100%; }
@@ -73,10 +76,10 @@ body {
   -webkit-font-smoothing: antialiased;
   font-variant-numeric: tabular-nums;
 }
-/* Hand-drawn cream strokes, like the mural behind the counter. */
+/* Fine plaster grain, like the textured walls. */
 body::before {
   content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  background: var(--doodles) 0 0 / 360px 360px repeat;
+  background: var(--grain) 0 0 / 220px 220px repeat;
 }
 * { box-sizing: border-box; }
 ::selection { background: var(--leaf-tint); }
@@ -88,7 +91,7 @@ h1 { font-size: 1.6rem; }
 h2 { font-size: 1.3rem; }
 h3 { font-size: 1.06rem; line-height: 1.4; }
 p { margin: 0; text-wrap: pretty; }
-.eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: var(--ink-3); }
+.eyebrow { font-family: var(--font-label); font-size: .74rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--path); }
 .eyebrow .jp { letter-spacing: .12em; margin-right: .5em; font-weight: 500; }
 .muted { color: var(--ink-2); }
 .small { font-size: .875rem; }
@@ -129,11 +132,11 @@ svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-widt
   transition: background 140ms var(--ease), opacity 140ms var(--ease), transform 140ms var(--ease);
 }
 .btn:active { opacity: .92; transform: translateY(1px); }
-.btn-primary { background: var(--ink); color: var(--on-ink); }
-.btn-primary:hover { background: var(--ink-2); }
+.btn-primary { background: var(--apron); color: var(--on-ink); }
+.btn-primary:hover { opacity: .9; }
 .btn-ghost { background: var(--paper); border-color: var(--ink); color: var(--ink); }
 .btn-ghost:hover { background: var(--paper-2); }
-.btn-dark { background: var(--path); color: #FFFFFA; }
+.btn-dark { background: var(--path); color: #FFFCF5; }
 .btn-dark:hover { background: var(--walnut); }
 .btn-block { width: 100%; }
 .btn[disabled] { opacity: .45; cursor: not-allowed; }
@@ -142,9 +145,9 @@ svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-widt
 
 /* Passport: plaster ridges on top, the mural journey below */
 .passport { background: var(--paper); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow); min-width: 0; }
-.ridge { position: relative; height: 124px; background: var(--paper-2); overflow: hidden; }
+.ridge { position: relative; height: 124px; background: var(--ground-deep) var(--grain); overflow: hidden; }
 .ridge svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.ridge .r { fill: var(--paper); filter: drop-shadow(0 -3px 6px var(--glow)); }
+.ridge .r { fill: var(--paper); filter: drop-shadow(0 -2px 3px var(--glow)) drop-shadow(0 -6px 10px var(--glow)); }
 .ridge-text { position: absolute; inset: var(--sp-4) var(--sp-5) auto; display: flex; justify-content: space-between; align-items: flex-start; gap: var(--sp-3); z-index: 1; }
 .ridge-text .name { font-size: 1.25rem; font-weight: 700; }
 .ridge-text .sub { white-space: nowrap; font-size: .75rem; color: var(--ink-3); letter-spacing: .08em; }
@@ -158,8 +161,8 @@ svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-widt
 .journey .disc.next { stroke: var(--leaf); stroke-width: 2.5; stroke-dasharray: 5 5; animation: turn 12s linear infinite; transform-box: fill-box; transform-origin: center; }
 @keyframes turn { to { transform: rotate(360deg); } }
 .journey image.todo { opacity: .22; filter: grayscale(1); }
-.journey .step-label { fill: var(--ink-3); font: 500 10.5px var(--font); text-anchor: middle; letter-spacing: .04em; }
-.journey .step-label.done { fill: var(--ink); font-weight: 700; }
+.journey .step-label { fill: var(--ink-3); font: 600 9.5px var(--font-label); text-anchor: middle; letter-spacing: .08em; text-transform: uppercase; }
+.journey .step-label.done { fill: var(--path); }
 .journey .badge-ring { fill: var(--paper); }
 .journey .pop { animation: stamp 520ms var(--ease); transform-box: fill-box; transform-origin: center; }
 @keyframes stamp { 0% { transform: scale(1.5) rotate(-12deg); opacity: 0; } 60% { opacity: 1; } 100% { transform: none; } }
@@ -179,6 +182,10 @@ svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-widt
 .panel-tint { background: var(--path-tint); box-shadow: none; }
 .panel-matcha { background: var(--leaf-tint); box-shadow: none; }
 .panel .art { width: 88px; height: 88px; flex: none; object-fit: contain; }
+.photo { display: block; width: 100%; max-width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--r-sm); background: var(--ground-deep); }
+.photo.tall { aspect-ratio: 4 / 3; }
+.panel > .photo:first-child { margin: calc(var(--sp-5) * -1) calc(var(--sp-5) * -1) var(--sp-1); width: calc(100% + var(--sp-5) * 2); max-width: none; border-radius: var(--r-md) var(--r-md) 0 0; }
+.thumb { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; flex: none; box-shadow: 0 0 0 3px var(--paper), 0 0 0 4.5px var(--line-strong); }
 
 /* Tea "cups": the brew seen from above, in a white cup like the mural circles */
 .swatch { border-radius: 50%; position: relative; overflow: hidden; flex: none; box-shadow: 0 0 0 4px var(--paper), 0 0 0 5.5px var(--line-strong); }
@@ -280,7 +287,7 @@ dialog.counter { --ground: #3A2718; --paper: #4A3321; --paper-2: #553B27; --ink:
 .steps li { list-style: none; display: grid; grid-template-columns: 64px 1fr; gap: var(--sp-4); align-items: center; }
 .steps img { width: 64px; height: 64px; object-fit: contain; }
 
-.reward-choice { display: grid; grid-template-columns: 48px 1fr; gap: var(--sp-3); align-items: start; }
+.reward-choice { display: grid; grid-template-columns: 64px 1fr; gap: var(--sp-3); align-items: start; }
 .reward-choice .seal-mini { width: 48px; height: 48px; }
 .code { font-family: var(--font-mono); font-size: 1.3rem; letter-spacing: .12em; padding: var(--sp-3) var(--sp-4); border: 1.5px dashed var(--ink); border-radius: var(--r-sm); text-align: center; user-select: all; background: var(--paper); }
 
@@ -497,10 +504,10 @@ function render() {
   if (tab === "find") bindMap();
 }
 
-// The eight steps on the YAMA wall mural, field to cup. One stamp lights one step.
+// The eight steps on the YAMA wall mural behind the counter, in its order and words. One stamp lights one step.
 const STEPS = [
-  ["harvest", "Harvest", "摘採"], ["steam", "Steam", "蒸熱"], ["roll", "Roll", "粗揉"], ["twist", "Twist", "揉捻"],
-  ["shape", "Shape", "精揉"], ["dry", "Dry", "乾燥"], ["sort", "Sort", "選別"], ["roast", "Roast", "焙煎"],
+  ["harvesting", "Harvesting", "摘み"], ["steaming", "Steaming", "蒸し"], ["rolling", "Rolling", "粗揉"], ["kneading", "Kneading", "揉捻"],
+  ["second-rolling", "Second rolling", "中揉"], ["shaping", "Shaping", "精揉"], ["drying", "Drying", "乾燥"], ["hojicha", "Hojicha", "焙茶"],
 ];
 const art = i => `art/${i + 1}-${STEPS[i][0]}.png`;
 const POS = [[50, 62], [150, 62], [250, 62], [350, 62], [350, 196], [250, 196], [150, 196], [50, 196]];
@@ -595,6 +602,13 @@ function viewCard() {
       </div>
     </section>
 
+    <section class="panel">
+      <img class="photo tall" src="photo/shopfront.jpg" alt="The YAMA | HojichaYa shopfront at Sunway Square Mall" loading="lazy">
+      <div class="eyebrow">Visit us</div>
+      <h3>YAMA Café, Sunway Square Mall</h3>
+      <p class="small muted">L2-10A, Sunway Square Mall, Bandar Sunway. Open daily, 10am to 10pm.</p>
+    </section>
+
     <button class="link-btn" data-act="how">How the passport works</button>
   </section>`;
 }
@@ -614,7 +628,7 @@ function bridgeCard() {
   }
   if (s.src === "yama") {
     return `<section class="panel panel-matcha">
-      <img class="art" src="art/1-harvest.png" alt="">
+      <img class="art" src="${art(0)}" alt="">
       <div class="eyebrow">Thanks for visiting YAMA</div>
       <h3>Find a tea to take home</h3>
       <p class="small muted">Tell us what you like and we'll match it to our teas. Every order online adds a stamp to this card.</p>
@@ -622,10 +636,11 @@ function bridgeCard() {
     </section>`;
   }
   return `<section class="panel panel-matcha">
-    <div class="row" style="align-items:flex-start"><img class="art" src="art/2-steam.png" alt=""><div class="stack" style="gap:4px">
+    <img class="photo" src="photo/seating.jpg" alt="Seats along YAMA's lit mountain wall" loading="lazy">
+    <div class="stack" style="gap:4px">
     <div class="eyebrow">Your next stamp</div>
     <h3>Taste it at the café</h3>
-    <p class="small muted">Your online order ${s.ref ? esc(s.ref) + " " : ""}added a stamp. Bring your card to ${esc(CONFIG.cafe)} and your next cup adds another to the same card.</p></div></div>
+    <p class="small muted">Your online order ${s.ref ? esc(s.ref) + " " : ""}added a stamp. Bring your card to ${esc(CONFIG.cafe)} and your next cup adds another to the same card.</p></div>
   </section>`;
 }
 
@@ -695,8 +710,9 @@ function viewFind() {
     <div class="view-head">
       <div class="eyebrow"><span class="jp">茶選び</span>Find a tea</div>
       <h1>Move the marker toward what you like</h1>
-      <p class="muted">We'll match it against every tea we make.</p>
+      <p class="muted">We'll match it against every tea on our shelves.</p>
     </div>
+    <img class="photo" src="photo/shelves.jpg" alt="Teas and teaware on the walnut shelves at YAMA" loading="lazy">
     <div class="chips" role="group" aria-label="Quick picks">
       ${PRESETS.map(p => `<button class="chip" data-preset="${p.id}" aria-pressed="${mapPreset === p.id}">${p.label}</button>`).join("")}
     </div>
@@ -776,8 +792,8 @@ function viewRewards() {
 
     ${ready ? `
     <div class="stack">
-      <div class="panel reward-choice">${seal("yama", "seal-mini")}<div class="stack" style="gap:var(--sp-2)"><h3>At YAMA Café</h3><p class="small muted">${esc(CONFIG.rewards.yama)}.</p><button class="btn btn-primary" data-act="redeem-yama">Use it at the counter</button></div></div>
-      <div class="panel reward-choice">${seal("online", "seal-mini")}<div class="stack" style="gap:var(--sp-2)"><h3>On hojichaya.com</h3><p class="small muted">${esc(CONFIG.rewards.online)}.</p><button class="btn btn-ghost" data-act="redeem-online">Get my code</button></div></div>
+      <div class="panel reward-choice"><img class="thumb" src="photo/matcha.jpg" alt=""><div class="stack" style="gap:var(--sp-2)"><h3>At YAMA Café</h3><p class="small muted">${esc(CONFIG.rewards.yama)}.</p><button class="btn btn-primary" data-act="redeem-yama">Use it at the counter</button></div></div>
+      <div class="panel reward-choice"><img class="thumb" src="photo/tins.jpg" alt=""><div class="stack" style="gap:var(--sp-2)"><h3>On hojichaya.com</h3><p class="small muted">${esc(CONFIG.rewards.online)}.</p><button class="btn btn-ghost" data-act="redeem-online">Get my code</button></div></div>
     </div>` : `
     <div class="panel stack">
       <div class="row between"><strong>${n} of ${per} stamps</strong><span class="small muted">${per - n} to go</span></div>
@@ -832,6 +848,7 @@ function sheetShowCard() {
 
 function sheetHow() {
   openSheet(`${sheetHead("How the passport works", "One card, two doors")}
+    <figure style="margin:0;display:grid;gap:var(--sp-2)"><img class="photo" src="photo/mural.jpg" alt="The tea-making mural behind the YAMA counter"><figcaption class="xs muted">Your card follows the mural behind our counter, from harvesting to hojicha.</figcaption></figure>
     <ol class="steps">
       <li><img src="${art(0)}" alt=""><div><strong>Collect stamps in both places</strong><p class="small muted">Show your card at YAMA Café for each visit. Orders on hojichaya.com add a stamp on their own when you use the same phone number.</p></div></li>
       <li><img src="${art(3)}" alt=""><div><strong>Follow the leaf</strong><p class="small muted">Each stamp moves your leaf one step along the journey on our café wall, from harvest to roast. Every tea you drink or buy also gets a page in your journal.</p></div></li>

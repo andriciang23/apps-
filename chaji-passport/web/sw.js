@@ -1,7 +1,8 @@
 // Offline shell for the installed passport. Card data comes from the API when online.
-const CACHE = "hy-passport-v2";
+const CACHE = "hy-passport-v3";
 const SHELL = ["./", "./index.html", "./teas.js", "./manifest.webmanifest", "./icon.svg",
-  ...["1-harvest", "2-steam", "3-roll", "4-twist", "5-shape", "6-dry", "7-sort", "8-roast"].map((n) => `./art/${n}.png`)];
+  ...["1-harvesting", "2-steaming", "3-rolling", "4-kneading", "5-second-rolling", "6-shaping", "7-drying", "8-hojicha"].map((n) => `./art/${n}.png`),
+  ...["seating", "mural", "shelves", "matcha", "tins", "shopfront"].map((n) => `./photo/${n}.jpg`)];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));

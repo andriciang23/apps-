@@ -86,23 +86,24 @@ Shopify stays the shop. The passport is the relationship.
 
 ## Update 2026-09-24 (later) — YAMA visual identity
 
-The owner preferred YAMA's look to the HojichaYa web palette, so the passport now follows the café. Sources, from the owner's Google Drive: the wall mural artwork, the eight process illustrations it's built from (`YAMA Wall Design`), the wall font files, the tea-field reference photo, and the pre-opening shopfront photos. The finished shop photos (`YAMA Shop Photos`, 10–23 MB each) were over the Drive connector's download limit and weren't reviewed.
+The owner preferred YAMA's look to the HojichaYa web palette, so the passport follows the café. The first pass used the mural's draft artwork (pistachio ground); the owner then shared the finished shop photos, which show the installed room is plaster, walnut and warm light, so the palette was re-tuned to the real space.
 
-| Element | From | Used as |
+| Element | From the room | Used as |
 |---|---|---|
-| `#DCDEA0` pistachio | Mural background | Page ground |
-| `#F0F0C0` cream strokes | Mural doodle lines | Tiled hand-drawn background |
-| `#FFFFFA` | Mural circles, plaster wall | Cards, stamp discs, tea cups |
-| `#304810` olive | Illustration linework | Text, primary buttons |
-| `#60A040` leaf | Illustration leaf fill | Online (茶) stamps, highlights |
-| `#8C5838` brown | Mural path | YAMA (山) stamps, progress, reward CTA |
-| Layered ridges with warm glow | Shopfront plaster relief with backlight | Card header |
-| Walnut | Shopfront shelving | Staff counter mode background |
-| Kozuka Gothic Pr6N (licensed) | Wall font folder | Noto Sans JP, its open-source counterpart by the same designer |
+| `#F3EEE2` + fine grain | Textured plaster walls | Page ground |
+| `#FFFCF5` with `#F1D39B` glow | Backlit plaster mountain ridges | Card header ridges, cards |
+| `#262621` | Signage lettering | Text |
+| `#2D3A33` | Barista aprons | Primary buttons |
+| `#7F5835` → `#51300E` | Walnut shelving | Counter mode, accents |
+| `#7A4526` + serif caps | Mural step labels and path | Eyebrows, step labels, YAMA (山) stamps |
+| `#4F7F2C` | Matcha in the cup, green cups | Online (茶) stamps, highlights |
+| Kozuka Gothic Pr6N (licensed) | Wall-design font folder | Noto Sans JP, its open counterpart |
 
-**The card is the mural.** Eight stamps, eight steps, in the mural's order: Harvest 摘採, Steam 蒸熱, Roll 粗揉, Twist 揉捻, Shape 精揉, Dry 乾燥, Sort 選別, Roast 焙煎. The brown path winds through the steps; each stamp fills the next illustration and carries a 山 or 茶 badge for where it was earned. The eighth stamp roasts the leaf and unlocks the reward. Customers who stand in front of the wall see the same journey on their phone.
+**The card is the mural.** Eight stamps, eight steps, in the wall's order and words: Harvesting 摘み, Steaming 蒸し, Rolling 粗揉, Kneading 揉捻, Second rolling 中揉, Shaping 精揉, Drying 乾燥, Hojicha 焙茶. The brown path winds through the steps; each stamp fills the next illustration with a 山 or 茶 badge for where it was earned. The eighth stamp is the roast and unlocks the reward.
 
-Illustrations live in `web/art/` (280px, 10–18 KB each). **Owner to confirm** the illustrator's licence covers use in the app.
+**Photos** (owner's shoot, resized to 960px in `web/photo/`): shopfront (Visit us), seating wall (café invite after an online order), mural (how it works), shelves (Find a tea), matcha and tins (reward choices). Photos with customers' or staff faces were left out.
+
+Illustrations live in `web/art/`. **Owner to confirm** the illustrator's licence covers use in the app.
 
 ## Why this and not…
 
