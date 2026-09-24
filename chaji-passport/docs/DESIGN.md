@@ -103,7 +103,7 @@ The owner preferred YAMA's look to the HojichaYa web palette, so the passport fo
 
 **Photos** (owner's shoot, resized to 960px in `web/photo/`): shopfront (Visit us), seating wall (café invite after an online order), mural (how it works), shelves (Find a tea), matcha and tins (reward choices). Photos with customers' or staff faces were left out.
 
-Illustrations live in `web/art/`. **Owner to confirm** the illustrator's licence covers use in the app.
+Illustrations live in `web/art/`. Rights: the owner has bought the rights to the mural illustrations from the illustrator (confirmed 2026-09-24), so they can be used in the app and its marketing.
 
 ## Why this and not…
 
