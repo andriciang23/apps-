@@ -1,0 +1,206 @@
+# Chaji Passport — HojichaYa x YAMA Café
+# client_id is filled in by `shopify app config link` (owner runs this once).
+client_id = ""
+name = "Chaji Passport"
+embedded = true
+
+[access_scopes]
+# read_products        tea catalogue for the wheel + drink cards
+# read/write_customers stamps summary + wholesale account tagging
+# write_draft_orders   HoReCa reorder desk creates drafts for owner approval (never auto-completes)
+# read_orders          "your usual" reorder history
+# read/write_metaobjects tea_profile, cafe_drink, tea_event entries
+# write_app_proxy      /apps/chaji storefront pages (table QR, wheel, reorder)
+scopes = "read_products,read_customers,write_customers,write_draft_orders,read_orders,read_metaobjects,write_metaobjects,write_app_proxy"
+
+[webhooks]
+api_version = "2025-10"
+
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/app/uninstalled"
+  topics = ["app/uninstalled"]
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/scopes_update" ]
+  uri = "/webhooks/app/scopes_update"
+
+# Storefront entry point: https://hojichaya.com/apps/chaji/...
+[app_proxy]
+url = "/proxy"
+prefix = "apps"
+subpath = "chaji"
+
+# ---------------------------------------------------------------------------
+# Custom data (app-owned). Created/updated on `shopify app deploy`.
+# Owner can edit entries in admin → Content → Metaobjects.
+# ---------------------------------------------------------------------------
+
+# One per tea product: the coordinates the Roast & Umami Wheel uses.
+[metaobjects.app.tea_profile]
+name = "Tea profile"
+description = "Flavour coordinates and brew guide used by the tea wheel and passport."
+display_name_field = "label"
+access.admin = "merchant_read_write"
+access.storefront = "public_read"
+
+  [metaobjects.app.tea_profile.fields.label]
+  name = "Label"
+  type = "single_line_text_field"
+  required = true
+
+  [metaobjects.app.tea_profile.fields.product]
+  name = "Product"
+  type = "product_reference"
+  required = true
+
+  [metaobjects.app.tea_profile.fields.family]
+  name = "Family"
+  type = "single_line_text_field"
+  validations.choices = ["hojicha", "matcha", "genmaicha", "sencha", "oolong"]
+
+  [metaobjects.app.tea_profile.fields.roast]
+  name = "Roast (0 none – 10 darkest)"
+  type = "number_integer"
+  validations.min = 0
+  validations.max = 10
+
+  [metaobjects.app.tea_profile.fields.umami]
+  name = "Umami (0–10)"
+  type = "number_integer"
+  validations.min = 0
+  validations.max = 10
+
+  [metaobjects.app.tea_profile.fields.sweetness]
+  name = "Sweetness (0–10)"
+  type = "number_integer"
+  validations.min = 0
+  validations.max = 10
+
+  [metaobjects.app.tea_profile.fields.astringency]
+  name = "Astringency (0–10)"
+  type = "number_integer"
+  validations.min = 0
+  validations.max = 10
+
+  [metaobjects.app.tea_profile.fields.caffeine]
+  name = "Caffeine"
+  type = "single_line_text_field"
+  validations.choices = ["low", "medium", "high"]
+
+  [metaobjects.app.tea_profile.fields.brew_temp_c]
+  name = "Brew temperature (°C)"
+  type = "number_integer"
+
+  [metaobjects.app.tea_profile.fields.brew_time_s]
+  name = "Brew time (seconds)"
+  type = "number_integer"
+
+  [metaobjects.app.tea_profile.fields.leaf_g]
+  name = "Leaf / powder per serve (g)"
+  type = "number_decimal"
+
+  [metaobjects.app.tea_profile.fields.notes]
+  name = "Tasting notes"
+  type = "single_line_text_field"
+
+  [metaobjects.app.tea_profile.fields.verified]
+  name = "Owner verified"
+  description = "Wheel only shows profiles the owner has checked."
+  type = "boolean"
+
+# One per YAMA Café menu drink: links what you drank to what you can buy.
+[metaobjects.app.cafe_drink]
+name = "Café drink"
+description = "YAMA Café menu item mapped to the HojichaYa product it is made with."
+display_name_field = "name"
+access.admin = "merchant_read_write"
+access.storefront = "public_read"
+
+  [metaobjects.app.cafe_drink.fields.name]
+  name = "Drink name"
+  type = "single_line_text_field"
+  required = true
+
+  [metaobjects.app.cafe_drink.fields.code]
+  name = "Code (used in table QR links)"
+  type = "single_line_text_field"
+  required = true
+
+  [metaobjects.app.cafe_drink.fields.image]
+  name = "Photo"
+  type = "file_reference"
+
+  [metaobjects.app.cafe_drink.fields.made_with]
+  name = "Made with"
+  type = "product_reference"
+  required = true
+
+  [metaobjects.app.cafe_drink.fields.starter_product]
+  name = "Try-at-home product (e.g. 20g sampler)"
+  type = "product_reference"
+
+  [metaobjects.app.cafe_drink.fields.home_recipe]
+  name = "Home recipe"
+  type = "multi_line_text_field"
+
+  [metaobjects.app.cafe_drink.fields.active]
+  name = "On the menu"
+  type = "boolean"
+
+# One per workshop / pop-up: the scrapbook page + attendee stamp.
+[metaobjects.app.tea_event]
+name = "Tea event"
+description = "Workshop or pop-up with photos, video and the teas tasted."
+display_name_field = "title"
+access.admin = "merchant_read_write"
+access.storefront = "public_read"
+
+  [metaobjects.app.tea_event.fields.title]
+  name = "Title"
+  type = "single_line_text_field"
+  required = true
+
+  [metaobjects.app.tea_event.fields.date]
+  name = "Date"
+  type = "date"
+
+  [metaobjects.app.tea_event.fields.location]
+  name = "Location"
+  type = "single_line_text_field"
+
+  [metaobjects.app.tea_event.fields.summary]
+  name = "Summary"
+  type = "multi_line_text_field"
+
+  [metaobjects.app.tea_event.fields.photos]
+  name = "Photos"
+  type = "list.file_reference"
+
+  [metaobjects.app.tea_event.fields.video]
+  name = "Video"
+  type = "file_reference"
+
+  [metaobjects.app.tea_event.fields.teas_tasted]
+  name = "Teas tasted"
+  type = "list.product_reference"
+
+  [metaobjects.app.tea_event.fields.stamp_code]
+  name = "Attendee stamp code"
+  type = "single_line_text_field"
+
+# Lets the theme read a product's profile directly: product.metafields.app.tea_profile
+[product.metafields.app.tea_profile]
+name = "Tea profile"
+type = "metaobject_reference<$app:tea_profile>"
+access.admin = "merchant_read_write"
+access.storefront = "public_read"
+
+[auth]
+redirect_urls = [ "https://example.com/api/auth" ]
+
+[pos]
+embedded = false
+
+[build]
+automatically_update_urls_on_dev = true
+include_config_on_deploy = true

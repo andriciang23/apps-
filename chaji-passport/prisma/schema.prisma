@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Note that some adapters may set a maximum length for the String type by default, please ensure your strings are long
+// enough when changing adapters.
+// See https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string for more information
+datasource db {
+  provider = "sqlite"
+  url      = "file:dev.sqlite"
+}
+
+model Session {
+  id            String    @id
+  shop          String
+  state         String
+  isOnline      Boolean   @default(false)
+  scope         String?
+  expires       DateTime?
+  accessToken   String
+  userId        BigInt?
+  firstName     String?
+  lastName      String?
+  email         String?
+  accountOwner  Boolean   @default(false)
+  locale        String?
+  collaborator  Boolean?  @default(false)
+  emailVerified Boolean?  @default(false)
+  refreshToken        String?
+  refreshTokenExpires DateTime?
+}
+
+// ---------------------------------------------------------------------------
+// Chaji Passport
+// ---------------------------------------------------------------------------
+
+// One row per stamp. Source of truth for the passport; the customer never
+// sees raw rows, only the derived profile and milestones.
+model Stamp {
+  id         String   @id @default(cuid())
+  shop       String
+  customerId String // numeric Shopify customer id (from app proxy logged_in_customer_id)
+  kind       String // "cafe_drink" | "event" | "wheel_purchase"
+  refCode    String // drink code, event stamp code, or product handle
+  productId  String? // gid of the tea this stamp counts towards
+  tableCode  String? // café table, for venue analytics
+  dayKey     String // YYYY-MM-DD in shop timezone, used for the daily caps
+  createdAt  DateTime @default(now())
+
+  // Same drink/event can only be stamped once per customer per day.
+  @@unique([shop, customerId, kind, refCode, dayKey])
+  @@index([shop, customerId])
+}
+
+// A HoReCa buyer. Linked to a Shopify customer tagged "horeca".
+model WholesaleAccount {
+  id           String      @id @default(cuid())
+  shop         String
+  customerId   String
+  businessName String
+  notes        String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  parLevels    ParLevel[]
+
+  @@unique([shop, customerId])
+}
+
+// Stock level a buyer wants to keep on hand, per variant.
+model ParLevel {
+  id         String           @id @default(cuid())
+  accountId  String
+  account    WholesaleAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  variantId  String // gid://shopify/ProductVariant/...
+  title      String // cached for display
+  unitGrams  Int // grams per variant unit (e.g. 500 for Wholesale Matcha 500g)
+  parGrams   Int // how much they want on the shelf
+  updatedAt  DateTime         @updatedAt
+
+  @@unique([accountId, variantId])
+}
